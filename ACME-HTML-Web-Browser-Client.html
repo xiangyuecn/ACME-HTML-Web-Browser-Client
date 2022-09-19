@@ -1,0 +1,2925 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<link rel="shortcut icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAe1BMVEUDuu3///8AtuwAue1c0/QAt+1a0vSZ4/gOve4Ju+4AtOzf9v31/P4iw/DS8/yf5fnE7/tNzvMsxvHw+/7t+v7k+P2U4veO4PeA3Pbp+f7h9/3Y9f3I8Pxt1/Vi1PRQz/NDzPIzyPEWv+76/v/3/f+87fqn5/mI3/Z82vb+fQDoAAAA10lEQVQ4y63T2c7CIBCGYWamUwFZurfuy7/e/xVaeySlYmJ8T78nISQgPh0xU2pGZa1EfrazHJz5an2FT3brYKoul4UqAHx5Hhqoq6VTMAc4aER9acDjEviFPd2voP9gKykGVECHkzyBsRzvI+g1jWG5BFDIPXRKjqkcTKUwPISPbvsN9XpqA9DuehXsF4g64APALAY+AHkMVm+CzToNVld1NAmwE0zaJ0DBQughAcxZ66tLAGj6f/f2NdMgewXKGHSPgOTPfG/Dh0vqlAXlluefahaLT3UDvrAKrj7jLKkAAAAASUVORK5CYII=" />
+
+<title>ACME Web Browser Client | ACME客户端H5网页单文件版，在线免费申请签发SSL/TLS通配符泛域名HTTPS证书，支持Let's Encrypt、ZeroSSL，无需账号免登录注册 | Get Wildcard Certificates Online For Free - Single HTML File</title>
+</head>
+
+<body>
+<script>
+var Version="1.0.220920";
+console.log("LICENSE: GPL-3.0, https://github.com/xiangyuecn/ACME-HTML-Web-Browser-Client/blob/main/LICENSE");
+/***********************************
+中英对照翻译主要来自：Chrome自带翻译+百度翻译，由中文翻译成English（作者英文很菜）。
+The Chinese-English translation is mainly from: Chrome comes with translation + Baidu translation, which is translated from Chinese to English (the author's English level is very low)
+
+感谢围观本客户端源码，所有功能的代码都在本页面一个文件内，逻辑上会比较长和比较丑（关键地方或多或少有写注释），如感不适，请转头看看旁边的大长腿，再深呼吸一下继续看下一行~
+Thank you for watching the source code of this client. The code of all functions is in one file on this page, which is logically long and ugly (more or less comments are written in key places). If you feel uncomfortable, please turn your head and look at the Big Long Legs next to you, take another deep breath and continue to look at the next line~
+************************************/
+</script>
+
+
+<div class="main-load Center" style="padding-top:40vh;font-size:28px">Loading...</div>
+<div class="main" style="display:none">
+<div class="mainBox acmeReadDirGotoCORSState" style="display:none"></div>
+
+<div class="mainBox">
+	<span style="font-size:32px;font-weight:bold;color:#03baed;">
+		<span class="langCN clientNameCN">HTML5网页版ACME客户端</span>
+		<span class="langEN clientNameEN">ACME Web Browser Client</span>
+	</span>
+	<span class="versionBox" style="font-size:14px;color:#03baed;margin-right:80px"></span>
+	<span style="display:inline-block">
+		<span class="langCN">开源代码：</span>
+		<span class="langEN">Open source: </span>
+		<a href="https://github.com/xiangyuecn/ACME-HTML-Web-Browser-Client" target="_blank">GitHub >></a>
+		<span class="langCN">
+			| <a href="https://gitee.com/xiangyuecn/ACME-HTML-Web-Browser-Client" target="_blank">Gitee >></a>
+		</span>
+	</span>
+	
+	<ul class="itemBox feature_ul" style="list-style-type: none;margin:8px 0 0 0;padding:0 8px 0 8px;color:#666">
+		<li class="langCN"><i>功能用途</i>本网页客户端用于：向 <a href="https://letsencrypt.org/" target="_blank">Let's Encrypt</a>、<a href="https://zerossl.com/" target="_blank">ZeroSSL</a> 等支持 ACME 协议的证书颁发机构，免费申请获得用于 HTTPS 的 SSL/TLS 域名证书（RSA、ECC/ECDSA），支持多域名和通配符泛域名；只需在现代浏览器上操作即可获得 PEM 格式纯文本的域名证书，不依赖操作系统环境，无需下载和安装软件，纯手动操作，<span class="Bold">只专注于申请获得证书这一件事。</span></li>
+		<li class="langEN"><i>Functional use</i>This web client is used to: apply for free SSL/TLS domain name certificates (RSA, ECC/ECDSA) for HTTPS from <a href="https://letsencrypt.org/" target="_blank">Let's Encrypt</a> , <a href="https://zerossl.com/" target="_blank">ZeroSSL</a> and other certificate authorities that support the ACME protocol, and support multiple domain names and wildcard pan-domain names; Simply operate on a modern browser to obtain a domain name certificate in plain text in PEM format, does not depend on the operating system environment, does not need to download and install software, and is purely manual, <span class="Bold">only focus on the only thing that is to apply for and obtain a certificate.</span></li>
+		
+		<li class="langCN"><i>简单易用</i>点点鼠标 Ctrl+C Ctrl+V 就能完成证书的申请，全程需要的操作少，每一步都有保姆级操作提示，UI友好大气美观；<span class="Bold">本客户端不需要注册账号、更不需要登录。</span></li>
+		<li class="langEN"><i>Simple to use</i>Click the mouse and Ctrl+C Ctrl+V to complete the certificate application. The whole process requires less operations, and there are nanny level operation prompts at each step; UI friendly, atmospheric and beautiful; <span class="Bold">This client does not need to register an account, and does not need to log in.</span></li>
+		
+		<li class="langCN"><i>开源项目</i>本网页客户端源码已开源，访问网址由托管仓库提供，源码透明可追溯。</li>
+		<li class="langEN"><i>Open source project</i>The source code of the client side of this webpage has been open sourced, and the access URL is provided by the hosting warehouse, and the source code is transparent and traceable.</li>
+		
+		<li class="langCN"><i>单一文件</i>本网页客户端仅一个静态 HTML 文件，不依赖其他任何文件；因此可以直接保存到你本地（右键-另存为），即可通过浏览器打开。</li>
+		<li class="langEN"><i>A single file</i>This web client is only a static HTML file and does not depend on any other files; therefore, it can be directly saved to your local (right-click - save as), and you can open it through a browser.</li>
+		
+		<li class="langCN"><i>数据安全</i>除了你指定证书颁发机构的 ACME 接口地址外，本网页客户端不会向其他任何地址发送数据，通过浏览器控制台很容易做到网络数据审查。</li>
+		<li class="langEN"><i>Data security</i>Except for the ACME interface address of the certificate authority you specify, this web client will not send data to any other address, and it is easy to check the network data through the browser console.</li>
+		
+		<li class="langCN"><i>系统安全</i>纯网页应用，不会也无法对你的电脑系统做出任何修改。</li>
+		<li class="langEN"><i>System security</i>Pure web application, will not and cannot make any modification to your computer system.</li>
+		
+		<li class="langCN" style="color:#cb1d1d"><i style="background:#cb1d1d">证书过期风险提醒</i>由于本网页客户端只能纯手动操作，不支持自动续期，需注意在证书过期前重新生申请新证书（免费证书普遍90天有效期，届时只需重复操作一遍即可），或使用 acme.sh 等客户端自动化续期。</li>
+		<li class="langEN" style="color:#cb1d1d"><i style="background:#cb1d1d">Certificate Expiration Risk Alert</i>Since this web client can only be operated manually and does not support automatic renewal, you should pay attention to apply for a new certificate before the certificate expires (free certificates are generally valid for 90 days, you only need to repeat the operation at that time), or use acme.sh and other client automatic renewal.</li>
+	</ul>
+	<style>
+		.feature_ul li{margin: 8px 0;}
+		.feature_ul i{
+			font-style: normal;
+			margin-right:8px;
+			display: inline-block;
+			vertical-align: middle;
+			background: #03baed;
+			color: #fff;
+			font-size: 14px;
+			padding: 2px 8px;
+			border-radius: 99px;
+		}
+	</style>
+</div>
+
+
+
+
+
+<div class="mainBox">
+	<div class="pd itemTitle">
+		<span class="langCN">步骤一：选择证书颁发机构</span>
+		<span class="langEN">Step 1: Select a Certificate Authority</span>
+	</div>
+	<div class="itemBox">
+		<div class="pd Bold">
+			<i class="must">*</i>
+			<span class="langCN">证书颁发机构 ACME(v2, <a href="https://www.rfc-editor.org/rfc/rfc8555.html" target="_blank">RFC 8555</a>) 服务URL：</span>
+			<span class="langEN">Certificate Authority ACME (v2, <a href="https://www.rfc-editor.org/rfc/rfc8555.html" target="_blank">RFC 8555</a>) Service URL:</span>
+		</div>
+		<div class="pd">
+			<label><input type="radio" name="choice_acmeURL" value="https://acme-v02.api.letsencrypt.org/directory">Let's Encrypt</label>
+			<label><input type="radio" name="choice_acmeURL" value="https://acme.zerossl.com/v2/DV90/directory">ZeroSSL</label>
+			<label>
+				<input type="radio" name="choice_acmeURL" value="manual">
+				<span class="langCN">手动填写URL</span>
+				<span class="langEN">Fill in the URL manually</span>
+			</label>
+			<label>
+				<input type="radio" name="choice_acmeURL" value="https://acme-staging-v02.api.letsencrypt.org/directory">
+				<span class="langCN">测试用[不要选]</span>
+				<span class="langEN">For testing, don't choose</span>
+			</label>
+		</div>
+		<div class="pd FlexBox">
+			<div class="FlexItem">
+				<input class="in_acmeURL inputLang" style="width:100%"
+					placeholder-cn="请填写证书颁发机构ACME服务URL"
+					placeholder-en="Please fill in the Certificate Authority ACME Service URL">
+			</div>
+			<div style="padding-left:12px">
+				<span class="mainBtn mainBtnMin" onclick="acmeReadDirClick()" style="padding:0 50px">
+					<span class="langCN">读取服务目录</span>
+					<span class="langEN">Read service directory</span>
+				</span>
+			</div>
+		</div>
+		<div class="acmeReadDirState"></div>
+<script>
+//跨域支持的不好的ACME服务，直接复制源码到他们网站里面运行
+var acmeReadDirGotoCORSInit=function(){
+	if(!window.IsReadDirGotoCORS)return;
+	var stateEl=$(".acmeReadDirGotoCORSState").show().html(`
+<div style="color:#cb1d1d">
+	<span class="langCN">本客户端正在以跨域兼容模式运行，请按正常流程操作即可，目标ACME服务URL=${window.Default_ACME_URL}</span>
+	<span class="langEN">This client is running in cross-domain compatibility mode, please follow the normal process, the target ACME service URL=${window.Default_ACME_URL}</span>
+</div>
+	`);
+	LangReview(stateEl);
+};
+var acmeReadDirGotoCORS=function(){
+	"use strict";
+	var codes="// "+Lang("请复制本代码到打开的ACME服务URL页面的浏览器控制台中运行。","Please copy this code to the browser console of the opened ACME service URL page to run.",true)
+		+"\n\nvar Default_ACME_URL="+JSON.stringify(ACME.URL)+";"
+		+"\nvar IsReadDirGotoCORS=true;"
+		+"\nvar PageRawHTML=`"
+			+PageRawHTML.replace(/\\/g,"\\\\").replace(/`/g,"\\`").replace(/\$\{/g,"$\\{")
+		+"`;";
+	codes+="\n("+(function(){
+		console.clear();
+		document.head.innerHTML=/<head[^>]*>([\S\s]+?)<\/head>/i.exec(PageRawHTML)[1];
+		document.body.innerHTML=/<body[^>]*>([\S\s]+)<\/body>/i.exec(PageRawHTML)[1];
+		var js=/<script[^>]*>([\S\s]+?)<\/script>/ig,m;
+		while(m=js.exec(PageRawHTML)) eval.call(window, m[1]);
+	}).toString()+")()";
+	var stateEl=$(".acmeReadDirState").append(`
+<div style="padding-top:15px">
+	<div class="pd Bold" style="color:red">
+		<i class="must">*</i>
+		<span class="langCN">由于此ACME服务对跨域访问支持不良，请按下面步骤操作：</span>
+		<span class="langEN">Because this ACME service has poor support for cross-domain access, please follow the steps below:</span>
+	</div>
+	<div class="pd">
+		<span class="langCN">1. 请在浏览器中直接打开此ACME服务URL，<a href="${ACME.URL}" target="_blank">点此打开</a>；</span>
+		<span class="langEN">1. Please open the ACME service URL directly in the browser, <a href="${ACME.URL}" target="_blank">click here to open</a>;</span>
+	</div>
+	<div class="pd">
+		<span class="langCN">2. 在上一步打开的页面中打开浏览器控制台（等页面加载完成后，再按F12键）；</span>
+		<span class="langEN">2. Open the browser console in the page opened in the previous step (after the page is loaded, press the F12 key);</span>
+	</div>
+	<div class="pd">
+		<span class="langCN">3. 复制以下代码，在第2步打开的浏览器控制台中运行，然后就可以正常申请证书了。</span>
+		<span class="langEN">3. Copy the following code, run it in the browser console opened in step 2, and then you can apply for the certificate normally.</span>
+	</div>
+	<div class="pd" style="font-size:13px;color:#aaa">
+		<span class="langCN">工作原理：代码内包含了本页面源码，在目标页面内运行后将原样的显示出本客户端，然后按正常流程操作即可，此时已没有跨域问题了（既然打不过，那就加入他们）。</span>
+		<span class="langEN">Working principle: The code contains the source code of this page. After running in the target page, the client will be displayed as it is, and then operate according to the normal process. At this time, there is no cross-domain problem (if we can't beat them, we'd better join them).</span>
+	</div>
+	<div style="padding-top:20px">
+		<textarea class="gotoCORSText" style="width:100%;height:200px" readonly></textarea>
+	</div>
+</div>
+	`);
+	$(".gotoCORSText").val(codes);
+	LangReview(stateEl);
+};
+</script>
+	</div>
+</div>
+
+
+
+
+
+<div class="mainBox">
+	<div class="pd itemTitle">
+		<span class="langCN">步骤二：证书配置</span>
+		<span class="langEN">Step 2: Certificate Configuration</span>
+	</div>
+	<div class="step2Hide step1Show">
+		<div class="itemBox" style="color:#999">
+			<span class="langCN">等待中，请先完成第一步...</span>
+			<span class="langEN">Waiting, please complete step 1 first...</span>
+		</div>
+	</div>
+	<div class="step1Hide step2Show">
+		
+		
+		<div class="pd" style="font-size:13px;color:#aaa">
+			<span class="langCN">温馨提示：如果上次申请过证书，可以拖拽已下载保存的记录LOG文件到本页面，将自动填充上次的配置信息。</span>
+			<span class="langEN">Reminder: If you have applied for a certificate last time, you can drag and drop the downloaded and saved record LOG file to this page, and the last configuration information will be automatically filled in.</span>
+		</div>
+		
+		
+		<div class="itemBox">
+			<div class="pd Bold">
+				<i class="must">*</i>
+				<span class="langCN">证书中要包含的域名：</span>
+				<span class="langEN">Domain name to be included in the certificate:</span>
+			</div>
+			<div class="pd" style="font-size:13px;color:#aaa">
+				<span class="langCN">一个证书可以包含多个域名（支持通配符），比如填写：<i class="i">a.com, *.a.com, b.com, *.b.com</i>；第一个域名将作为证书的通用名称（Common Name）；带通配符的域名只支持DNS验证，其他域名支持上传文件验证；注意：填了<i class="i">www.a.com</i>时，一般需要额外填上<i class="i">a.com</i>。</span>
+				<span class="langEN">A certificate can contain multiple domain names (wildcard are supported), for example, fill in: <i class="i">a.com, *.a.com, b.com, *.b.com</i>; the first domain name will be used as the Common Name of the certificate; Domain names with wildcard only support DNS verification, and other domain names support upload file verification ; Note: When <i class="i">www.a.com</i> is filled in, it is generally necessary to fill in <i class="i">a.com</i> additionally.</span>
+			</div>
+			<div class="FlexBox">
+				<div class="FlexItem">
+					<input class="in_domains inputLang" style="width:100%"
+						placeholder-cn="请填写你的域名，多个用逗号隔开"
+						placeholder-en="Please fill in your domain name, multiple separated by commas">
+				</div>
+				<div style="padding-left:15px;line-height:30px;font-size:13px;color:#aaa">
+					<label>
+						<input type="checkbox" class="choice_domains_store">
+						<span class="langCN">记住</span>
+						<span class="langEN">Remember</span>
+					</label>
+				</div>
+			</div>
+		</div>
+		
+		
+		<div class="itemBox">
+			<div class="pd Bold">
+				<i class="must">*</i>
+				<span class="langCN">证书的私钥：</span>
+				<span class="langEN">Private key of certificate:</span>
+			</div>
+			<div class="pd" style="font-size:13px;color:#aaa">
+				<span class="langCN">生成或填写的私钥仅用于ACME接口签名，支持<i class="i">RSA(2048位+)</i>、<i class="i">ECC(<span class="eccCurveNames"></span>曲线)</i>私钥；<span style="color:#f80">注意：证书私钥的类型决定了申请到的证书是RSA证书还是ECC(ECDSA)证书，RSA类型适用性更广也更常见</span>；本客户端不会对此私钥进行保存或发送给其他任何人；证书签发后在部署到服务器时，需使用到此私钥；建议每次申请证书时均生成新的证书私钥。</span>
+				<span class="langEN">The generated or filled private key is only used for ACME interface signature, and supports <i class="i">RSA (2048-bit+)</i> and <i class="i">ECC (<span class="eccCurveNames"></span> curve)</i> private keys; <span style="color:#f80">Note: The type of certificate private key determines whether the applied certificate is an RSA certificate or a ECC(ECDSA) certificate, RSA type is more widely applicable and more common;</span> this client will not save or send this private key to anyone else; this private key needs to be used when deploying to the server after the certificate is issued; it is recommended to generate a new certificate private key every time you apply for a certificate.</span>
+			</div>
+			<div class="pd">
+				<label>
+					<input type="radio" name="choice_privateKey" value="generateRSA">
+					<span class="langCN">创建新RSA私钥</span>
+					<span class="langEN">Generate RSA private key</span>
+				</label>
+				<label>
+					<input type="radio" name="choice_privateKey" value="generateECC">
+					<span class="langCN">创建新ECC私钥</span>
+					<span class="langEN">Generate ECC private key</span>
+				</label>
+				<label>
+					<input type="radio" name="choice_privateKey" value="manual">
+					<span class="langCN">手动填写私钥</span>
+					<span class="langEN">Manually fill in the private key</span>
+				</label>
+			</div>
+			<div class="privateKeyBox">
+				<textarea class="in_privateKey inputLang" style="width:100%;height:60px"
+					placeholder-cn="请填写pem私钥，私钥文本以 -----BEGIN PRIVATE KEY----- 开头（这是PKCS#8格式，里面带有 RSA|EC 字符的PKCS#1格式也是支持的）"
+					placeholder-en="Please fill in the pem private key. The private key text starts with -----BEGIN PRIVATE KEY----- (this is in PKCS#8 format, and PKCS#1 format with RSA|EC characters in it is also supported)"></textarea>
+			</div>
+			<div class="privateKeyState"></div>
+		</div>
+		
+		
+		<div class="itemBox">
+			<div class="pd Bold">
+				<i class="must">*</i>
+				<span class="langCN">ACME账户的私钥：</span>
+				<span class="langEN">Private key of ACME account:</span>
+			</div>
+			<div class="pd" style="font-size:13px;color:#aaa">
+				<span class="langCN">生成或填写的私钥仅用于ACME接口签名，支持<i class="i">RSA(2048位+)</i>、<i class="i">ECC(<span class="eccCurveNames"></span>曲线)</i>私钥；账户私钥类型对证书无影响；本客户端不会对此私钥进行保存或发送给其他任何人；一个私钥相当于一个账户，可用于吊销已签发的证书；建议每次申请证书时使用相同的一个私钥（这样短期内多次申请证书时，验证域名所有权的参数极有可能会保持相同），不过每次都生成一个新的私钥大部分情况下也不会有问题。</span>
+				<span class="langEN">The generated or filled private key is only used for ACME interface signature, and supports <i class="i">RSA (2048-bit+)</i> and <i class="i">ECC (<span class="eccCurveNames"></span> curve)</i> private keys; the account private key type has no effect on the certificate; this client will not save or send this private key to anyone else; A private key is equivalent to an account and can be used to revoke an issued certificate; it is recommended to use the same private key every time you apply for a certificate (in this way, the parameters used to verify the domain name ownership are likely to remain identical when multiple certificate applications are made in a short period of time); However, generating a new private key every time will not be a problem in most cases.</span>
+			</div>
+			<div class="pd">
+				<label>
+					<input type="radio" name="choice_accountKey" value="generateRSA">
+					<span class="langCN">创建新RSA私钥</span>
+					<span class="langEN">Generate RSA private key</span>
+				</label>
+				<label>
+					<input type="radio" name="choice_accountKey" value="generateECC">
+					<span class="langCN">创建新ECC私钥</span>
+					<span class="langEN">Generate ECC private key</span>
+				</label>
+				<label>
+					<input type="radio" name="choice_accountKey" value="manual">
+					<span class="langCN">手动填写私钥</span>
+					<span class="langEN">Manually fill in the private key</span>
+				</label>
+			</div>
+			<div class="accountKeyBox">
+				<textarea class="in_accountKey inputLang" style="width:100%;height:60px"
+					placeholder-cn="请填写pem私钥，私钥文本以 -----BEGIN PRIVATE KEY----- 开头（这是PKCS#8格式，里面带有 RSA|EC 字符的PKCS#1格式也是支持的）"
+					placeholder-en="Please fill in the pem private key. The private key text starts with -----BEGIN PRIVATE KEY----- (this is in PKCS#8 format, and PKCS#1 format with RSA|EC characters in it is also supported)"></textarea>
+			</div>
+			<div class="accountKeyState"></div>
+		</div>
+		
+		
+		<div class="itemBox">
+			<div class="pd Bold">
+				<i class="must">*</i>
+				<span class="langCN">ACME账户的联系邮箱：</span>
+				<span class="langEN">Contact email of ACME account:</span>
+			</div>
+			<div class="pd" style="font-size:13px;color:#aaa">
+				<span class="langCN">此邮箱地址用于证书颁发机构给你发送邮件，比如：证书过期前的续期通知提醒。</span>
+				<span class="langEN">This email address is used by the certificate authority to send you emails, such as a reminder of renewal notice before the certificate expires.</span>
+			</div>
+			<div class="FlexBox">
+				<div class="FlexItem">
+					<input class="in_email inputLang" style="width:100%"
+						placeholder-cn="请填写一个你的邮箱"
+						placeholder-en="Please fill in one of your email addresses">
+				</div>
+				<div style="padding-left:15px;line-height:30px;font-size:13px;color:#aaa">
+					<label>
+						<input type="checkbox" class="choice_email_store">
+						<span class="langCN">记住</span>
+						<span class="langEN">Remember</span>
+					</label>
+				</div>
+			</div>
+		</div>
+		
+		
+		<div class="itemBox eabBox">
+			<div class="pd Bold">
+				<span class="langCN">EAB凭据：</span>
+				<span class="langEN">EAB Credentials:</span>
+			</div>
+			<div class="pd" style="font-size:13px;color:#aaa">
+				<span class="langCN">当前ACME服务要求提供外部账号绑定凭据（External Account Binding），比如ZeroSSL：你可以在ZeroSSL的管理控制台的 Developer 中获得此凭据，所以你需要先注册一个ZeroSSL的账号。</span>
+				<span class="langEN">The current ACME service requires external account binding credentials, such as ZeroSSL: You can obtain this credentials in the Developer of the ZeroSSL management console, so you need to register a ZeroSSL account first.</span>
+			</div>
+			<div class="FlexBox" style="line-height:30px">
+				<div><i class="must">*</i>EAB KID:</div>
+				<div class="FlexItem" style="padding:0 50px 0 6px">
+					<input class="in_eab_kid inputLang" style="width:100%"
+						placeholder-cn="请填写EAB KID"
+						placeholder-en="Please fill in EAB KID">
+				</div>
+				<div style="padding:0 6px 0 0"><i class="must">*</i>HMAC KEY:</div>
+				<div class="FlexItem">
+					<input class="in_eab_key inputLang" style="width:100%"
+						placeholder-cn="请填写EAB HMAC KEY"
+						placeholder-en="Please fill in EAB HMAC KEY">
+				</div>
+			</div>
+		</div>
+		
+		<div class="pd termsAgreeBox">
+			<label>
+				<input type="checkbox" class="choice_termsAgree">
+				<span class="termsAgreeTips"></span>
+			</label>
+		</div>
+		
+		<div class="Center" style="padding:15px 0 10px">
+			<span class="mainBtn" onclick="configStepClick()" style="width:300px">
+				<span class="langCN">确定</span>
+				<span class="langEN">OK</span>
+			</span>
+		</div>
+		<div class="configStepState"></div>
+		
+	</div>
+</div>
+
+
+
+
+
+
+<div class="mainBox">
+	<div class="pd itemTitle">
+		<span class="langCN">步骤三：验证域名所有权</span>
+		<span class="langEN">Step 3: Verify Domain Ownership</span>
+	</div>
+	<div class="step3Hide step2Show step1Show">
+		<div class="itemBox" style="color:#999">
+			<span class="langCN">等待中，请先完成第二步...</span>
+			<span class="langEN">Waiting, please complete step 2 first...</span>
+		</div>
+	</div>
+	<div class="step1Hide step2Hide step3Show">
+		
+		<div class="pd" style="font-size:13px;color:#f80">
+			<span class="langCN">请给每个域名选择一个你合适的验证方式（推荐采用DNS验证，比较简单和通用），然后根据显示的提示完成对应的配置操作。</span>
+			<span class="langEN">Please select a suitable verification method for each domain name (DNS Verify is recommended, which is relatively simple and common), and then complete the corresponding configuration operations according to the displayed prompts.</span>
+		</div>
+		
+		<div class="verifyBox"></div>
+<script>
+//显示所有域名的验证界面，html太多
+var verifyBoxShow=function(){
+	"use strict";
+	var boxEl=$(".verifyBox").html("");
+	var auths=JSON.parse(JSON.stringify(ACME.StepData.auths));//避免改动原始数据
+	var domains=ACME.StepData.config.domains;
+	for(var i0=0;i0<domains.length;i0++){
+		var domain=domains[i0],auth=auths[domain]
+		
+		var challs=auth.challenges;
+		for(var i=0;i<challs.length;i++){//排序，dns排前面
+			var o=challs[i];
+			o.challIdx=i;
+			o.name=ACME.ChallName(o);
+			o._sort=ACME.ChallSort(o);
+		}
+		challs.sort(function(a,b){return a._sort.localeCompare(b._sort)});
+		var choiceHtml="";
+		for(var i=0;i<challs.length;i++){
+			var chall=challs[i];
+			choiceHtml+=`
+<label>
+	<input type="radio" name="choice_authItem_${i0}"
+		class="choice_authChall choice_authChall_${i0} choice_authChall_${i0}_${i}"
+		value="${i0}_${i}" challidx="${chall.challIdx}">${chall.name}
+</label>
+			`;
+		}
+		
+		boxEl.append(`
+<div class="itemBox">
+	<div class="pd FlexBox" style="line-height:26px">
+		<div><i class="must">*</i></div>
+		<div style="width:180px;padding-right:5px;text-align:right;background:#03baed;color:#fff;border-radius: 4px;">${domain}</div>
+		<div class="FlexItem" style="padding-left:10px;">${choiceHtml}</div>
+	</div>
+	<div class="verifyItemBox_${i0}"></div>
+	<div class="verifyItemState_${i0}"></div>
+</div>
+		`);
+	};
+	LangReview(boxEl);
+	
+	$(".choice_authChall").bind("click",function(e){
+		var el=e.target,vals=el.value.split("_"),i0=+vals[0],i2=+vals[1];
+		var domain=domains[i0],auth=auths[domain],chall=auth.challenges[i2];
+		var html=['<div class="pd" style="padding-left:10px;font-size:13px;color:#aaa">'];
+		var nameCss='width:195px;text-align:right;padding-right:10px';
+		if(chall.type=="dns-01"){
+			html.push(Lang('请到你的域名DNS解析管理中，给下面这个子域名增加一条<i class="i">TXT记录</i>（一个子域名可以同时存在多条TXT记录，可以修改或删除老的记录）。','Please go to the DNS resolution management of your domain name and add a <i class="i">TXT record</i> for the following subdomain name (a subdomain name can have multiple TXT records at the same time, and the old records can be modified or deleted).')+'</div>');
+			html.push(`<div class="pd FlexBox">
+				<div style="${nameCss}">${Lang('子域名','Sub Domain')}:</div>
+				<div class="FlexItem">
+					<input style="width:100%" readonly value="_acme-challenge.${auth.identifier.value}" />
+				</div>
+			</div>
+			<div class="pd FlexBox">
+				<div style="${nameCss}">${Lang('TXT记录','TXT Record')}:</div>
+				<div class="FlexItem">
+					<input style="width:100%" readonly value="${chall.authTxtSHA256}" />
+				</div>
+			</div>`);
+		}else if(chall.type=="http-01"){
+			html.push(Lang('请在你的网站根目录中创建<i class="i">/.well-known/acme-challenge/</i>目录，目录内创建<i class="i">'+chall.token+'</i>文件，文件内保存下面的文件内容，保存好后<a href="http://'+auth.identifier.value+'/.well-known/acme-challenge/'+chall.token+'" target="_blank">请点此打开此文件URL</a>测试能否正常访问；注意：这个文件URL必须是80端口，并且公网可以访问，否则ACME无法访问到此地址将会验证失败。Windows操作提示：Windows中用<i class="i">.well-known.</i>作为文件夹名称就能创建<i class="i">.well-known</i>文件夹；IIS可能需在此文件夹下的MIME类型中给 <i class="i">.</i> （扩展名就是一个字"."）添加 <i class="i">text/plain</i> 才能正常访问。','Please create the <i class="i">/.well-known/acme-challenge/</i> directory in the root directory of your website, create the <i class="i">'+chall.token+'</i> file in the directory, and save the following file content in the file; After saving, <a href="http://'+auth.identifier.value+'/.well-known/acme-challenge/'+chall.token+'" target="_blank">please click here to open the URL</a> of this file to test whether Normal access; note: the URL of this file must be 80 The port and the public network can be accessed, otherwise ACME cannot access this address and the verification will fail. Windows operation tips: In Windows, you can create a <i class="i">.well-known</i> folder by using <i class="i">.well-known.</i> as the folder name; IIS may need to give <i class="i">.</i> in the MIME type under this folder (the extension is a word ".") Add <i class="i">text/plain</i> for normal access.')+'</div>');
+			html.push(`<div class="pd FlexBox">
+				<div style="${nameCss}">${Lang('文件URL','File URL')}:</div>
+				<div class="FlexItem">
+					<input style="width:100%" readonly value="http://${auth.identifier.value}/.well-known/acme-challenge/${chall.token}" />
+				</div>
+			</div>
+			<div class="pd FlexBox">
+				<div style="${nameCss}">${Lang('文件内容','File Content')}:</div>
+				<div class="FlexItem">
+					<input style="width:100%" readonly value="${chall.authTxt}" />
+				</div>
+			</div>`);
+		}else{
+			html.push(Lang('非预定义验证类型，请使用<i class="i">Key Authorizations (Token+.+指纹)</i>自行处理，<i class="i">Digest</i>为Key Authorizations的SHA-256 Base64值。','For non-predefined authentication types, please use <i class="i">Key Authorizations (Token+.+Thumbprint)</i> to handle it yourself. <i class="i">Digest</i> is the SHA-256 Base64 value of Key Authorizations.')+'</div>');
+			html.push(`<div class="pd FlexBox">
+				<div style="${nameCss}">Key Authorizations:</div>
+				<div class="FlexItem">
+					<input style="width:100%" readonly value="${chall.authTxt}" />
+				</div>
+			</div>
+			<div class="pd FlexBox">
+				<div style="${nameCss}">Digest(SHA-256 Base64):</div>
+				<div class="FlexItem">
+					<input style="width:100%" readonly value="${chall.authTxtSHA256Base64}" />
+				</div>
+			</div>`);
+		}
+		$(".verifyItemBox_"+i0).html(html.join('\n'));
+	});
+	for(var i0=0;i0<domains.length;i0++){
+		var el=$(".choice_authChall_"+i0+"_0");
+		el[0]&&el[0].click(); //默认选中每个域名的第一个
+	}
+};
+</script>
+		
+		<div class="itemBox">
+			<div class="pd" style="font-size:15px">
+				<span class="langCN">请每个域名选择好对应的验证方式，根据显示的提示进行对应的配置操作；<span style="color:#cb1d1d">必须所有域名配置完成后，再来点击下面的“开始验证”按钮进行验证，</span>如果验证失败，需要返回第二步重新开始操作。</span>
+				<span class="langEN">Please select the corresponding verify method for each domain name, and perform the corresponding configuration operation according to the displayed prompts; <span style="color:#cb1d1d">after all domain names are configured, click the "Start Verify" button below to verify,</span> if the verify fails, you need to go back to the step 2 Start the operation.</span>
+			</div>
+			
+			<div class="Center" style="padding:15px 0 10px">
+				<span class="mainBtn verifyStepBtn" onclick="verifyStepClick()" style="width:300px">
+					<span class="langCN">开始验证</span>
+					<span class="langEN">Start Verify</span>
+				</span>
+				<span class="mainBtn verifyRunStopBtn" onclick="verifyRunStopClick()" style="width:300px;background:#aaa">
+					<span class="langCN">取消</span>
+					<span class="langEN">Cancel</span>
+				</span>
+				<span class="mainBtn finalizeOrderBtn" onclick="finalizeOrderClick()" style="width:300px">
+					<span class="langCN">重试</span>
+					<span class="langEN">Retry</span>
+				</span>
+			</div>
+			<div class="verifyStepState"></div>
+		</div>
+		
+	</div>
+</div>
+
+
+
+
+
+
+<div class="mainBox">
+	<div class="pd itemTitle">
+		<span class="langCN">步骤四：下载保存证书PEM文件</span>
+		<span class="langEN">Step 4: Download and save the certificate PEM file</span>
+	</div>
+	<div class="step4Hide step3Show step2Show step1Show">
+		<div class="itemBox" style="color:#999">
+			<span class="langCN">等待中，请先完成第三步...</span>
+			<span class="langEN">Waiting, please complete step 3 first...</span>
+		</div>
+	</div>
+	<div class="step1Hide step2Hide step3Hide step4Show">
+	
+	
+		<div class="itemBox">
+			<div class="pd Bold">
+				<i class="must">*</i>
+				<span class="langCN">保存证书PEM文件：</span>
+				<span class="langEN">Save certificate PEM file: </span>
+			</div>
+			<div class="pd" style="font-size:13px;color:#aaa">
+				<span class="langCN"><span style="color:#f80">必须保存此文件，</span>请点击下载按钮下载，或者将证书文本内容复制保存为<i class="i downloadCertFileName"></i>文件（PEM纯文本格式）；文件名后缀可改成 <i class="i">.crt</i> 或 <i class="i">.cer</i>，这样在Windows中能直接双击打开查看。本PEM格式文件已包含你的域名证书、和完整证书链，文本中第一个CERTIFICATE为你的域名证书，后面的为证书颁发机构的中间证书和根证书，如过有需要你可以自行拆分成多个.pem文件。</span>
+				<span class="langEN"><span style="color:#f80">This file must be saved,</span> please click the download button to download, or copy the text content of the certificate and save it as <i class="i downloadCertFileName"></i> file (PEM plain text format); the file name suffix can be changed to <i class="i">.crt </i> or <i class="i">.cer </i>, so that it can be directly double-clicked to open and view in Windows. This PEM format file already contains your domain name certificate and complete certificate chain. The first CERTIFICATE in the text is your domain name certificate, followed by the intermediate certificate and root certificate of the certificate authority, if necessary, you can split it into multiple .pem files.</span>
+			</div>
+			<div class="FlexBox">
+				<div class="FlexItem">
+					<textarea class="txt_downloadCert" style="width:100%;height:160px" readonly></textarea>
+				</div>
+				<div style="padding-left:10px;line-height:30px;font-size:13px;color:#aaa">
+					<div class="mainBtn" onclick="downloadBtnClick('Cert')">
+						<span class="langCN">下载保存</span>
+						<span class="langEN">Download</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		
+		<div class="itemBox">
+			<div class="pd Bold">
+				<i class="must">*</i>
+				<span class="langCN">保存证书私钥KEY文件：</span>
+				<span class="langEN">Save the certificate private key KEY file: </span>
+			</div>
+			<div class="pd" style="font-size:13px;color:#aaa">
+				<span class="langCN">请点击下载按钮下载，或者将私钥文本内容复制保存为<i class="i downloadKeyFileName"></i>文件（PEM纯文本格式，.key后缀可自行修改成.pem）。如果第二步操作中你手动填写了证书私钥，此处的证书私钥和你填写的是完全一样的，可以不需要重复保存；<span style="color:#f80">如果你是新创建的证书私钥，则你必须下载保存此证书私钥文件。</span></span>
+				<span class="langEN">Please click the download button to download, or copy and save the text content of the private key as <i class="i downloadKeyFileName"></i> file (PEM plain text format, the .key suffix can be modified to .pem by yourself). If you manually filled in the certificate private key in the step 2, the certificate private key here is exactly the same as what you filled in, and you don’t need to save it repeatedly; <span style="color:#f80">if you are a newly created certificate private key, you must download and save it This certificate private key file.</span></span>
+			</div>
+			<div class="FlexBox">
+				<div class="FlexItem">
+					<textarea class="txt_downloadKey" style="width:100%;height:80px" readonly></textarea>
+				</div>
+				<div style="padding-left:10px;line-height:30px;font-size:13px;color:#aaa">
+					<div class="mainBtn" onclick="downloadBtnClick('Key')">
+						<span class="langCN">下载保存</span>
+						<span class="langEN">Download</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		
+		<div class="itemBox">
+			<div class="pd Bold">
+				<i class="must">*</i>
+				<span class="langCN">保存记录LOG文件：</span>
+				<span class="langEN">Save the record LOG file: </span>
+			</div>
+			<div class="pd" style="font-size:13px;color:#aaa">
+				<span class="langCN">建议下载保存此文件，本记录文件包含了所有数据，包括：证书PEM文本、证书私钥PEM文本、账户私钥PEM文本、所有配置参数。下次你需要续签新证书时，可以将本记录文件直接拖拽进本页面，会自动填写所有参数。</span>
+				<span class="langEN">It is recommended to download and save this file. This record file contains all data, including: certificate PEM text, certificate private key PEM text, account private key PEM text, and all configuration parameters. Next time you need to renew a new certificate, you can drag and drop the record file directly into this page, and all parameters will be filled in automatically.</span>
+			</div>
+			<div class="FlexBox">
+				<div class="FlexItem">
+					<textarea class="txt_downloadLog" style="width:100%;height:80px" readonly></textarea>
+				</div>
+				<div style="padding-left:10px;line-height:30px;font-size:13px;color:#aaa">
+					<div class="mainBtn" onclick="downloadBtnClick('Log')">
+						<span class="langCN">下载保存</span>
+						<span class="langEN">Download</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		
+	</div>
+<script>
+var downloadFileNameShow=function(name){
+	$(".downloadFileName").html(name);
+	$(".downloadKeyFileName").html(name+".key");
+	$(".downloadCertFileName").html(name+".pem");
+};
+</script>
+</div>
+
+
+
+
+
+
+<div class="mainBox">
+		
+	<div class="itemBox">
+		<div class="pd Bold">
+			<span class="langCN">你需要其他格式的证书文件？</span>
+			<span class="langEN">Do you need certificate files in other formats?</span>
+		</div>
+		<div class="pd" style="font-size:13px;color:#aaa">
+			<span class="langCN">大部分服务器程序支持直接使用 <i class="i downloadCertFileName"></i>+<i class="i downloadKeyFileName"></i> 来配置开启HTTPS（比如Nginx），如果你需要 <i class="i">*.pfx</i>、<i class="i">*.p12</i> 格式的证书（比如用于IIS），请用下面命令将PEM证书转换成 <i class="i">pfx/p12</i> 格式：</span>
+			<span class="langEN">Most server programs support directly using <i class="i downloadCertFileName"></i>+<i class="i downloadKeyFileName"></i> to configure and enable HTTPS (such as Nginx). If you need a certificate in <i class="i">*.pfx</i> or <i class="i">*.p12</i> format (such as for IIS), please use the following command to convert the PEM certificate Convert to <i class="i">pfx/p12</i> format:</span>
+		</div>
+		<div class="code">openssl pkcs12 -export -out <span class="downloadFileName"></span>.pfx -inkey <span class="downloadKeyFileName"></span> -in <span class="downloadCertFileName"></span></div>
+	</div>
+	
+	<div class="itemBox">
+		<div class="pd Bold">
+			<span class="langCN">IIS证书链缺失？</span>
+			<span class="langEN">IIS certificate chain missing?</span>
+		</div>
+		<div class="pd" style="font-size:13px;color:#aaa">
+			<span class="langCN">对于Windows IIS服务器，你需要将证书链安装到“本地计算机”的“中间证书颁发机构”中；请将PEM证书中的所有证书拆分成单个PEM文件（后缀改成<i class="i">.crt</i>或<i class="i">.cer</i>），然后将系统中缺失的中间证书双击打开然后安装进去；详细参考：</span>
+			<span class="langEN">For Windows IIS server, you need to install the certificate chain into "Intermediate Certification Authorities" in "Local Computer"; please split all certificates in PEM certificate into a single PEM file (change the suffix to <i class="i">.crt</i> or <i class="i">.cer</i>), then double-click to open the missing intermediate certificate in the system Then install it; detailed reference:</span>
+			<a href="http://support.microsoft.com/kb/954755" target="_blank">http://support.microsoft.com/kb/954755</a>
+		</div>
+	</div>
+	
+	<div class="itemBox">
+		<div class="pd Bold">
+			<span class="langCN">本客户端部分原理简介</span>
+			<span class="langEN">Introduction to the principle of this client</span>
+		</div>
+		<div class="pd" style="font-size:13px;color:#aaa">
+			<span class="langCN">得益于现代浏览器的 <a href="https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto" target="_blank">crypto.subtle</a> 对加密功能标准化，不依赖其他任何js库就能在网页上实现 <i class="i">RSA</i>、<i class="i">ECC</i> 的加密、解密、签名、验证、和密钥对生成。在本客户端内的 <i class="i">X509</i> 对象中：用 X509.CreateCSR 来生成CSR，用 X509.KeyGenerate 来创建PEM格式密钥，用 X509.KeyParse 来解析PEM格式密钥，用 X509.KeyExport 来导出PEM格式密钥；这些功能都是根据相应的标准用js代码在二进制层面上实现的，二进制数据操作封装在了 <i class="i">ASN1</i> 对象中：实现了 ASN.1 标准的二进制解析和封包，使用 ASN1.ParsePEM 方法可以解析任意的PEM格式密钥或证书。以上这些都是实现ACME网页客户端的核心基础。</span>
+			<span class="langEN">Thanks to the standardization of encryption functions by <a href="https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto" target="_blank">crypto.subtle</a> of modern browsers, <i class="i">RSA</i> and <i class="i">ECC</i> encryption, decryption, signature, verification, and key pair generation can be implemented on web pages without relying on any other js library. In the <i class="i">X509</i> object in this client: use X509.CreateCSR to generate CSR, use X509.KeyGenerate to create PEM format key, use X509.KeyParse to parse PEM format key, use X509.KeyExport to export PEM format key; These functions are implemented at the binary level with js code according to the corresponding standards, and binary data operations are encapsulated in <i class="i">ASN1</i> objects: ASN.1 standard binary parsing and encapsulation are implemented, Arbitrary PEM format keys or certificates can be parsed using the ASN1.ParsePEM method. These are the core foundations for implementing the ACME web client.</span>
+		</div>
+		<div class="pd" style="font-size:13px;color:#aaa">
+			<span class="langCN">然后就是对接ACME实现证书的签发，和实现交互UI；对接ACME可以直接参考 RFC 8555 标准。有些证书颁发机构的ACME服务对浏览器支持不良，未提供齐全的 <i class="i">Access-Control-*</i> 响应头，导致网页内无法直接调用服务接口；目前采用的解决办法非常简单粗暴，比如ZeroSSL：检测到此ACME服务存在跨域问题时，会调用 <i class="i">acmeReadDirGotoCORS()</i> 方法告诉用户操作步骤（你可以手动调用此方法），通过在他们的页面内运行本客户端来消除跨域问题（既然打不过，那就加入他们）。</span>
+			<span class="langEN">Then it is to connect with ACME to realize certificate issuance and realize interactive UI; for connecting with ACME, you can directly refer to the RFC 8555 standard. The ACME services of some certificate authorities do not support browsers well, and do not provide complete <i class="i">Access-Control-*</i> response headers, so that the service interface cannot be called directly in the web page; the current solution is very simple and rude, such as ZeroSSL: detect this ACME When there is a cross-domain problem with the service, the <i class="i">acmeReadDirGotoCORS()</i> method will be called to tell the user the operation steps (you can call this method manually), and the cross-domain problem will be eliminated by running this client in their page (if we can't beat them, we'd better join them).</span>
+		</div>
+	</div>
+	
+	<div class="itemBox">
+		<div class="pd Bold">
+			<span class="langCN">QQ群：交流与支持</span>
+			<span class="langEN">QQ group: communication and support</span>
+		</div>
+		<div class="pd" style="font-size:13px;color:#aaa">
+			<span class="langCN">欢迎加QQ群：<i class="i">421882406</i>，纯小写口令：<i class="i">xiangyuecn</i>。如需功能定制，网站、App、小程序、前端和后端等开发需求，请加此QQ群，联系群主（即作者），谢谢~</span>
+			<span class="langEN">Welcome to join the QQ group: <i class="i">421882406</i> , code: <i class="i">xiangyuecn</i> . If you need function customization, website, app, applet, front-end and back-end development needs, please join this QQ group and contact the group owner (ie the author), thank you~</span>
+		</div>
+	</div>
+	
+</div>
+
+
+
+
+<div style="padding-top:20px;font-size:13px;color:#aaa">
+	<div class="pd langEN">The Chinese-English translation is mainly from: Chrome comes with translation + Baidu translation, which is translated from Chinese to English.</div>
+	
+	<div class="pd">
+		<span class="versionBox"></span>
+		<a style="margin-left:15px" href="https://github.com/xiangyuecn/ACME-HTML-Web-Browser-Client/blob/main/LICENSE" target="_blank">License: GPL-3.0</a>
+	</div>
+</div>
+
+
+
+<div class="toastState" style="display:none;position:fixed;padding:10px;bottom:10px;right:10px;width:360px;max-height:120px;overflow-y:auto;background:#fff;box-shadow: 0px 0px 3px #aaa;border-radius: 10px;"></div>
+
+<div class="donateWidget" style="position:fixed;top:30%;right:5px;width:160px">
+	<div style="border-radius:12px;background:linear-gradient(160deg, rgba(0,179,255,.7) 20%, rgba(177,0,255,.7) 80%);max-width:300px;padding:20px 10px;text-align: center;">
+		<div style="font-size:18px;color:#fff;">
+			<span class="langCN">赏包辣条？</span>
+			<span class="langEN">Donate a Coke?</span>
+		</div>
+		<div style="font-size:14px;color:#fff;">
+			<div class="langCN" style="padding:10px 0">客户端工具开发维护不易，期望本项目对你能有所帮助，欢迎通过下面按钮打赏作者~</div>
+			<span class="langEN">It is not easy to develop and maintain client tools. I hope this project can help you. Welcome to reward the author through the following buttons~</span>
+		</div>
+		<div>
+			<span class="langCN">
+				<a href="https://xiangyuecn.gitee.io/docs/about.html" target="_blank" class="mainBtn mainBtnMin" style="color:#fff">打赏 <span class="donateBtnIco"></span></a>
+			</span>
+			<span class="langEN">
+				<a href="https://xiangyuecn.github.io/Docs/about.html" target="_blank" class="mainBtn mainBtnMin" style="color:#fff">Donate <span class="donateBtnIco"></span></a>
+			</span>
+		</div>
+	</div>
+</div>
+
+<div class="langBtnBox" style="position:fixed;top:0;right:0;padding:5px 10px;font-size:14px;border-radius:0 0 0 10px;background:#f5f5f5;">
+	Language:
+	  <a class="langBtn langBtn_cn" onclick="LangClick('cn')">中文</a>
+	| <a class="langBtn langBtn_en" onclick="LangClick('en')">EN</a>
+</div>
+
+</div>
+
+
+
+<style>
+body{
+	word-wrap: break-word;
+	--word-break: break-all;
+	background:#f5f5f5 center top no-repeat;
+	background-size: auto 680px;
+}
+pre{
+	white-space:pre-wrap;
+}
+label,label *{
+	cursor: pointer;
+}
+label:hover{
+	color:#06c;
+}
+a{
+	text-decoration: none;
+	color:#06c;
+	cursor: pointer;
+}
+a:hover{
+	color:#f00;
+}
+input, textarea {
+	--outline: 0;
+	border: 1px solid #999;
+	padding: 2px;
+	box-sizing: border-box;
+	font-size: 15px;
+	line-height:24px;
+}
+
+.main{
+	max-width:900px;
+	margin:0 auto;
+	padding-bottom:80px
+}
+
+.mainBox{
+	margin-top:12px;
+	padding: 12px;
+	border-radius: 6px;
+	background: #fff;
+	box-shadow: 2px 2px 3px #aaa;
+}
+
+
+.mainBtn{
+	display: inline-block;
+	cursor: pointer;
+	border: none;
+	border-radius: 3px;
+	background: #f80;
+	color:#fff;
+	padding: 0 15px;
+	line-height: 36px;
+	height: 36px;
+	overflow: hidden;
+	vertical-align: middle;
+}
+.mainBtnMin{
+	height: 30px;
+	line-height: 30px;
+	font-size: 14px;
+	padding: 0 12px;
+}
+.mainBtn:hover{
+	opacity:0.8;
+}
+.mainBtn:active{
+	opacity:1;
+	background: #f00;
+}
+
+.pd{
+	padding:0 0 8px 0;
+}
+.pdT{
+	padding:8px 0 0 0;
+}
+.lb{
+	display:inline-block;
+	vertical-align: middle;
+	background:#00940e;
+	color:#fff;
+	font-size:14px;
+	padding:2px 8px;
+	border-radius: 99px;
+}
+
+.Fill {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+.Center{
+	text-align: center;
+}
+.CenterV {
+	display: -webkit-flex;
+	display: -ms-flex;
+	display: -moz-flex;
+	display: flex;
+	-webkit-align-items: center;
+	-ms-align-items: center;
+	-moz-align-items: center;
+	align-items: center;
+}
+.FlexBox {
+	display: -webkit-flex;
+	display: -ms-flex;
+	display: -moz-flex;
+	display: flex;
+}
+.FlexBoxV{
+	-webkit-flex-direction:column;
+	-ms-flex-direction:column;
+	-moz-flex-direction:column;
+	flex-direction:column;
+}
+.FlexCenter{
+	-webkit-box-pack:center;
+	-ms-box-pack:center;
+	-moz-box-pack:center;
+	box-pack:center;
+	-webkit-justify-content:center;
+	-ms-justify-content:center;
+	-moz-justify-content:center;
+	justify-content:center;
+}
+.FlexCenterV{
+	-webkit-box-align:center;
+	-ms-box-align:center;
+	-moz-box-align:center;
+	box-align:center;
+	-webkit-align-items:center;
+	-ms-align-items:center;
+	-moz-align-items:center;
+	align-items:center;
+}
+.FlexItem {
+	-webkit-flex: 1;
+	-ms-flex: 1;
+	-moz-flex: 1;
+	flex: 1;
+}
+
+
+.Bold{
+	font-weight: bold;
+}
+.code{
+	padding: 15px;
+	background-color: #000;
+	vertical-align: middle;
+	color: #fff;
+	font-size: 14px;
+	white-space: pre-wrap;
+	border-radius: 6px;
+	font-style: normal;
+}
+.i{
+	padding: 2px 4px;
+	background-color: #f6f6f6;
+	vertical-align: top;
+	color: #c7254e;
+	font-size: 12px;
+	white-space: pre-wrap;
+	border-radius: 4px;
+	font-style: normal;
+}
+i.must{
+	color:red;
+	font-style:normal;
+}
+.itemTitle{
+	font-size: 24px;
+	font-weight: bold;
+	color: #03baed;
+}
+.itemBox{
+	padding:8px;
+	margin-bottom:6px;
+	border:1px #ccc dashed;
+	border-radius: 6px;
+}
+</style>
+
+
+
+
+<script>
+//=================================================
+//================= UI functions ==================
+//=================================================
+//LICENSE: GPL-3.0, https://github.com/xiangyuecn/ACME-HTML-Web-Browser-Client
+(function(){
+"use strict";
+var ChoiceAcmeURLStoreKey="ACME_HTML_choice_acmeURL";
+var InputDomainsStoreKey="ACME_HTML_input_domains";
+var InputEmailStoreKey="ACME_HTML_input_email";
+var DropConfigFile={}; //拖拽进来的上次配置文件
+
+/************** UI: Initialize on Launch **************/
+window.initMainUI=function(){
+	$(".eccCurveNames").html(X509.SupportECCType2Names().join(Lang("、",", ")));
+	$(".donateBtnIco").html(unescape("%uD83D%uDE18"));
+	$(".versionBox").html(Lang("版本: "+Version,"Ver: "+Version));
+	downloadFileNameShow("your_domain");
+	
+	if(/mobile/i.test(navigator.userAgent)){
+		$(".main").prepend($(".langBtnBox").css("position",null));
+		$(".donateWidget").css("position",null);
+	}
+	
+	CLog("initMainUI",0,Lang(
+`一些高级配置：
+- 设置 X509.DefaultType2_RSA="4096" 可以调整新生成的RSA密钥位数。
+- 设置 X509.DefaultType2_ECC="P-384" 可以调整新生成的ECC密钥曲线，X509.SupportECCType2内为支持的曲线。
+- 设置 DefaultDownloadFileNames 内的属性可以修改对应下载的文件默认名称。
+- UI调试：完成第二步后允许进行UI调试，手动调用 Test_AllStepData_Save() 保存数据，刷新页面可恢复界面。`,
+`Some advanced configurations:
+- Set X509.DefaultType2_RSA="4096" The number of newly generated RSA keys can be adjusted.
+- Set X509.DefaultType2_ECC="P-384" The newly generated ECC key curve can be adjusted. The supported curve is in X509.SupportECCType2.
+- Setting the property in DefaultDownloadFileNames can modify the default name of the corresponding downloaded file.
+- UI debugging: Allow UI debugging after completing the step 2 . Manually call Test_AllStepData_Save() to save the data, and refresh the page to restore the interface.`));
+	
+	initTest_Restore();
+	acmeReadDirGotoCORSInit();
+	initStep1();
+	initStep2();
+	initStep4();
+};
+var initStep1=function(){
+	$("input[name=choice_acmeURL]").bind("click",function(e){
+		var el=e.target;
+		var isManual=el.value=="manual";
+		$(".in_acmeURL").css("opacity",isManual?1:0.4)
+			.val(isManual?step1ChoiceStoreVal:el.value)
+			.attr("readonly",isManual?null:"");
+		
+		step1ChoiceStoreVal="";
+		choiceAcmeURLChangeAfter();
+	});
+	resetStep1();
+};
+var step1ChoiceStoreVal;
+var resetStep1=function(){
+	//选中上次选择的证书颁发机构
+	step1ChoiceStoreVal=DropConfigFile.acmeURL||window.Default_ACME_URL||localStorage[ChoiceAcmeURLStoreKey]||"";
+	var choices=$("input[name=choice_acmeURL]")
+	var idx=0;
+	if(step1ChoiceStoreVal){
+		var manualIdx=0;
+		for(var i=0;i<choices.length;i++){
+			if(choices[i].value==step1ChoiceStoreVal) idx=i+1;
+			if(choices[i].value=="manual") manualIdx=i+1;
+		}
+		if(!idx)idx=manualIdx //手动填写
+		idx--;
+	}
+	choices[idx].click();
+};
+var initStep2=function(){
+	//证书私钥UI
+	$(".privateKeyBox").hide();
+	$("input[name=choice_privateKey]").bind("click",function(e){
+		var el=e.target;
+		var isManual=el.value=="manual";
+		$(".in_privateKey").css("opacity",isManual?1:0.4)
+			.val("")
+			.attr("readonly",isManual?null:"");
+		$(".privateKeyBox").show();
+		
+		configPrivateKeyGenerate(el.value);//生成密钥
+		configStepShow();//重新显示界面
+	});
+	
+	//ACME账户私钥UI
+	$(".accountKeyBox").hide();
+	$("input[name=choice_accountKey]").bind("click",function(e){
+		var el=e.target;
+		var isManual=el.value=="manual";
+		$(".in_accountKey").css("opacity",isManual?1:0.4)
+			.val("")
+			.attr("readonly",isManual?null:"");
+		$(".accountKeyBox").show();
+		
+		configAccountKeyGenerate(el.value);//生成密钥
+		configStepShow();//重新显示界面
+	});
+};
+
+
+//下一步操作提示
+var NextStepTips=function(){
+	return '<span style="font-size:24px;font-weight:bold;">'+Lang("请进行下一步操作。"," Please proceed to the next step.")+'</span>';
+};
+//请稍后提示
+var PleaseWaitTips=function(){
+	return Lang(" 请稍后... "," Please wait... ");
+};
+//请重试提示
+var TryAgainTips=function(){
+	return Lang(" 请重试！"," Please try again! ");
+};
+//每一步的状态更新显示
+var ShowState=function(elem,msg,color,tag){
+	var now=new Date();
+	var t=("0"+now.getHours()).substr(-2)
+		+":"+("0"+now.getMinutes()).substr(-2)
+		+":"+("0"+now.getSeconds()).substr(-2);
+	$(elem).html(msg===false?'':'<div style="color:'+(!color?"":color==1?"red":color==2?"#0b1":color==3?"#fa0":color)+'">'+(tag==null?'['+t+'] ':tag)+msg+'</div>');
+	return msg;
+};
+window.Toast=function(msg,color,time){
+	ShowState(".toastState",msg,color,"");
+	
+	$(".toastState").show();
+	clearTimeout(Toast._int);
+	Toast._int=setTimeout(function(){ $(".toastState").hide(); }, time||5000);
+};
+window.onerror=function(message, url, lineNo, columnNo, error){
+	//https://www.cnblogs.com/xianyulaodi/p/6201829.html
+	Toast('【Uncaught Error】'+message+'<pre>'+"at:"+lineNo+":"+columnNo+" url:"+url+"\n"+(error&&error.stack||"-")+'</pre>',1,15000);
+};
+
+
+
+//用户点击操作同步控制，新点击操作要终止之前未完成的操作
+var UserClickSyncID=0;
+var UserClickSyncKill=function(id,tag,msg){
+	if(id!=UserClickSyncID){
+		var abort=Lang("被终止","Abort",1);
+		CLog(tag+" "+abort,3,"From: "+msg+" ["+abort+"]");
+		return true;
+	}
+};
+
+
+
+
+
+/************** UI Step1: Read ACME service directory **************/
+//证书颁发机构单选按钮点击后处理
+var choiceAcmeURLChangeAfter=function(){
+	UserClickSyncID++;
+	
+	$(".step1Hide").hide();
+	$(".step1Show").show();
+	ShowState(".acmeReadDirState",false);
+	
+	if($(".in_acmeURL").val())acmeReadDirClick();
+};
+//点击读取服务目录按钮
+window.acmeReadDirClick=function(){
+	var id=++UserClickSyncID;
+	
+	$(".step1Hide").hide();
+	$(".step1Show").show();
+	var tag="Step-1",sEl=".acmeReadDirState";
+	
+	var url=$(".in_acmeURL").val().trim();
+	if(!url){
+		ShowState(sEl,Lang("请填写服务URL！","Please fill in the service URL!"),1);
+		return;
+	}
+	localStorage[ChoiceAcmeURLStoreKey]=url;
+	url=ACME.URL=url.replace(/\/$/,"");
+	
+	var msg0=CLog(tag,0, ShowState(sEl,PleaseWaitTips()+Lang("正在读取服务目录，","Reading service directory, ")+" URL="+ACME.URL, 2));
+	var reqDir=function(){
+		ACME.Directory(function(cache,saveCache){
+			saveCacheCors=function(corsOK,err){
+				cache.corsOK=corsOK?1:-1;
+				cache.corsError=err||"";
+				saveCache();
+			};
+			if(cache.corsOK==1) dirOK();//已缓存的，此ACME服务正常
+			else if(cache.corsOK==-1) testCORSFail(cache.corsError, true);//不正常已缓存
+			else testCORS();//检测是否能正常调用接口，是否支持跨域
+		},function(err){
+			if(UserClickSyncKill(id,tag,msg0+" err: "+err))return;
+			CLog(tag,1, ShowState(sEl,Lang("读取服务目录出错："+err,"Read service directory error: "+err)+TryAgainTips(), 1));
+		});
+	};
+	var saveCacheCors;
+	var dirOK=function(){
+		if(UserClickSyncKill(id,tag,msg0))return;
+		configStepShow();
+		CLog(tag,0, ShowState(sEl,Lang("读取服务目录成功，","Read service directory OK,")
+			+NextStepTips()+" URL="+ACME.URL, 2), ACME.DirData);
+	};
+	
+	//ZeroSSL接口跨域支持太差，发现这种就直接在他们网站里面跑
+	var testCORS=function(){
+		if(UserClickSyncKill(id,tag,msg0))return;
+		msg0=CLog(tag,0, ShowState(sEl,PleaseWaitTips()+Lang("正在测试此ACME服务对浏览器的支持情况，","Testing browser support for this ACME service, ")+" URL="+ACME.URL, 2));
+		ACME.GetNonce(true,function(){
+			ACME.TestAccountCORS(function(){
+				CLog(tag,0, Lang("此ACME服务对浏览器的支持良好。","This ACME service has good browser support."));
+				saveCacheCors(true);
+				dirOK();
+			},testCORSFail);
+		},function(err,corsFail){ //GetNonce 能明确检测到是否支持跨域可以缓存起来，账户地址可能是网络错误不缓存
+			if(corsFail) saveCacheCors(false, err);
+			testCORSFail(err,corsFail);
+		});
+	};
+	var testCORSFail=function(err,corsFail){
+		if(UserClickSyncKill(id,tag,msg0+" err: "+err))return;
+		CLog(tag,1, ShowState(sEl,Lang(
+			"测试此ACME服务对浏览器的支持情况，发生错误："+err
+			,"Test browser support for this ACME service, An error occurred: "+err)
+			+(corsFail?"":TryAgainTips()), 1));
+		LangReview(sEl);//err from cache
+		if(corsFail) acmeReadDirGotoCORS();
+	};
+	
+	reqDir();
+};
+
+
+
+
+
+
+/************** UI Step2: Certificate Configuration **************/
+//显示第二步界面
+var configStepShow=function(){
+	$(".step2Hide").hide();
+	$(".step2Show").show();
+	ShowState(".configStepState",false);
+	
+	$(".eabBox")[ACME.StepData.needEAB?'show':'hide']();
+	if(DropConfigFile.eabKid)$(".in_eab_kid").val(DropConfigFile.eabKid);
+	if(DropConfigFile.eabKey)$(".in_eab_key").val(DropConfigFile.eabKey);
+	
+	$(".termsAgreeBox")[ACME.StepData.termsURL?'show':'hide']();
+	$(".termsAgreeTips").html(Lang('我同意此证书颁发机构ACME服务的<a href="'+ACME.StepData.termsURL+'" target="_blank">服务条款</a>。', 'I agree to the <a href="'+ACME.StepData.termsURL+'" target="_blank">terms of service</a> for this Certificate Authority ACME Service.'));
+	$(".choice_termsAgree").prop("checked",true);
+	
+	var el=$(".in_domains");//填充上次填写的域名列表
+	var valS=localStorage[InputDomainsStoreKey];
+	var val=DropConfigFile.domains&&DropConfigFile.domains.join(", ")||valS;
+	if(!el.val()){
+		el.val(val||"");
+	}
+	$(".choice_domains_store").prop("checked", !!valS);
+	
+	var el=$(".in_email");//填充上次填写的联系邮箱
+	var valS=localStorage[InputEmailStoreKey];
+	var val=DropConfigFile.email||valS;
+	if(!el.val()){
+		el.val(val||"");
+	}
+	$(".choice_email_store").prop("checked", !!valS);
+	
+	var setKey=function(k){
+		if(DropConfigFile[k]){
+			$("input[name=choice_"+k+"][value=manual]")[0].click();
+			$(".in_"+k).val(DropConfigFile[k]);
+		}
+	};
+	setKey("privateKey");setKey("accountKey");
+	
+	DropConfigFile={};//配置完成，丢弃拖拽进来的配置信息
+};
+//生成证书的密钥对
+var configPrivateKeyGenerate=function(type){
+	var id=++UserClickSyncID;
+	var tag="Step-2",sEl=".privateKeyState";
+	
+	var keyTag="",type2;
+	if(type=="generateRSA"){
+		type="RSA";type2=X509.DefaultType2_RSA;
+		keyTag=Lang("证书RSA私钥("+type2+"位)","Certificate RSA private key ("+type2+" bits)");
+	}else if(type=="generateECC"){
+		type="ECC";type2=X509.DefaultType2_ECC; var type2N=X509.SupportECCType2[type2]||type2;
+		keyTag=Lang("证书ECC私钥("+type2N+"曲线)","Certificate ECC Private Key ("+type2N+" curve)");
+	}else{
+		ShowState(sEl,false);
+		return;
+	};
+	
+	var msg0=CLog(tag,0, ShowState(sEl,PleaseWaitTips()+Lang("正在创建","Generating ")+keyTag, 2));
+	X509.KeyGenerate(type,function(pem){
+		if(UserClickSyncKill(id,tag,msg0))return;
+		$(".in_privateKey").val(pem);
+		CLog(tag,0, ShowState(sEl,keyTag+Lang("，创建成功。",", generated successfully."), 2), '\n'+pem);
+	},function(err){
+		if(UserClickSyncKill(id,tag,msg0+" err: "+err))return;
+		CLog(tag,1, ShowState(sEl,keyTag+Lang("，发生错误："+err,", An error occurred: "+err), 1));
+	});
+};
+//生成ACME账户的密钥对
+var configAccountKeyGenerate=function(type){
+	var id=++UserClickSyncID;
+	var tag="Step-2",sEl=".accountKeyState";
+	
+	var keyTag="",type2;
+	if(type=="generateRSA"){
+		type="RSA";type2=X509.DefaultType2_RSA;
+		keyTag=Lang("ACME账户RSA私钥("+type2+"位)","ACME account RSA private key ("+type2+" bits)");
+	}else if(type=="generateECC"){
+		type="ECC";type2=X509.DefaultType2_ECC; var type2N=X509.SupportECCType2[type2]||type2;
+		keyTag=Lang("ACME账户ECC私钥("+type2N+"曲线)","ACME account ECC Private Key ("+type2N+" curve)");
+	}else{
+		ShowState(sEl,false);
+		return;
+	};
+	
+	var msg0=CLog(tag,0, ShowState(sEl,PleaseWaitTips()+Lang("正在创建","Generating ")+keyTag, 2));
+	X509.KeyGenerate(type,function(pem){
+		if(UserClickSyncKill(id,tag,msg0))return;
+		$(".in_accountKey").val(pem);
+		CLog(tag,0, ShowState(sEl,keyTag+Lang("，创建成功。",", generated successfully."), 2), '\n'+pem);
+	},function(err){
+		if(UserClickSyncKill(id,tag,msg0+" err: "+err))return;
+		CLog(tag,1, ShowState(sEl,keyTag+Lang("，发生错误："+err,", An error occurred: "+err), 1));
+	});
+};
+//点击确定按钮，完成配置域名和私钥的配置
+window.configStepClick=function(){
+	var id=++UserClickSyncID;
+	var tag="Step-2",sEl=".configStepState";
+	
+	$(".step2Hide").hide();
+	$(".step2Show").show();
+	ShowState(sEl,false);
+	
+	var domains=$(".in_domains").val().trim();
+	var domainsStore=$(".choice_domains_store").prop("checked");
+	var privateKey=$(".in_privateKey").val().trim();
+	var accountKey=$(".in_accountKey").val().trim();
+	var email=$(".in_email").val().trim();
+	var emailStore=$(".choice_email_store").prop("checked");
+	var eabKid=$(".in_eab_kid").val().trim();
+	var eabKey=$(".in_eab_key").val().trim();
+	var termsAgree=$(".choice_termsAgree").prop("checked");
+	
+	//域名转成数组
+	domains=domains.replace(/\s+/g,",").replace(/，+/g,",").split(/,+/);
+	for(var i=0,mp={};i<domains.length;i++){
+		var domain=domains[i];
+		if(!domain){
+			domains.splice(i,1); i--; continue;
+		}else if(mp[domain])
+			return ShowState(sEl,Lang("域名"+domain+"重复！","Duplicate domain name "+domain+"!"),1);
+		mp[domain]=1;
+	}
+	localStorage[InputDomainsStoreKey]=domainsStore?domains.join(", "):"";
+	localStorage[InputEmailStoreKey]=emailStore?email:"";
+	
+	//校验是否输入
+	if(!domains.length)
+		return ShowState(sEl,Lang("请填写证书中要包含的域名！","Please fill in domain name to be included in the certificate!"),1);
+	if(!privateKey)
+		return ShowState(sEl,Lang("请选择证书的私钥！","Please select the private key of the certificate!"),1);
+	if(!accountKey)
+		return ShowState(sEl,Lang("请选择ACME账户的私钥！","Please select the private key of ACME account!"),1);
+	if(!/.+@.+\..+/.test(email) || /[\s,;]/.test(email))
+		return ShowState(sEl,Lang("请正确填写联系邮箱！","Please fill in the contact email correctly!"),1);
+	if(ACME.StepData.needEAB && !(eabKid && eabKey))
+		return ShowState(sEl,Lang("请填写EAB KID和HMAC KEY！","Please fill in EAB KID and HMAC KEY!"),1);
+	if(ACME.StepData.termsURL && !termsAgree)
+		return ShowState(sEl,Lang("未同意此ACME服务的服务条款！","Do not agree to the terms of service of this acme service!"),1);
+	
+	//校验私钥格式是否支持
+	var privateKeyInfo, parsePrivateKey=function(){
+		X509.KeyParse(privateKey,function(info){
+			privateKeyInfo=info; parseAccountKey();
+		},function(err){
+			ShowState(sEl,Lang("证书的私钥无效：","The private key of the certificate is invalid: ")+err,1);
+		},1);
+	};
+	var accountKeyInfo,parseAccountKey=function(){
+		X509.KeyParse(accountKey,function(info){
+			accountKeyInfo=info; parseKeyOK();
+		},function(err){
+			ShowState(sEl,Lang("ACME账户的私钥无效：","The private key of the ACME account is invalid: ")+err,1);
+		},1);
+	};
+	
+	var msg0=CLog(tag,0, ShowState(sEl,PleaseWaitTips(), 2));
+	//设置配置数据
+	var parseKeyOK=function(){
+		if(UserClickSyncKill(id,tag,msg0))return;
+		
+		ACME.StepData.config={
+			domains:domains
+			,privateKey:privateKeyInfo
+			,accountKey:accountKeyInfo
+			,email:email
+			,eabKid:eabKid
+			,eabKey:eabKey
+		};
+		CLog(tag, 0, "config", ACME.StepData.config);
+		
+		acmeNewAccount();
+	};
+	
+	//ACME账户接口调用
+	var acmeNewAccount=function(){
+		var msg0=CLog(tag,0, ShowState(sEl,PleaseWaitTips()+Lang("正在调用ACME服务的newAccount接口：","The newAccount interface that is calling the ACME service: ")+ACME.DirData.newAccount, 2));
+		ACME.StepAccount(function(){
+			if(UserClickSyncKill(id,tag,msg0))return;
+			acmeNewOrder();
+		},function(err){
+			if(UserClickSyncKill(id,tag,msg0+" err: "+err))return;
+			CLog(tag,1, ShowState(sEl,Lang("调用ACME服务的newAccount接口：","Call the newAccount interface of the ACME service: ")
+				+ACME.DirData.newAccount+Lang("，发生错误："+err,", An error occurred: "+err), 1));
+		});
+	};
+	//ACME订单创建接口调用
+	var acmeNewOrder=function(){
+		var msg0,onProgress=function(tips){
+			if(id!=UserClickSyncID)return;
+			msg0=CLog(tag,0, ShowState(sEl,PleaseWaitTips()+Lang("正在调用ACME服务的订单接口。","The order interface that is calling the ACME service.")+' '+tips+" URL:"+ACME.DirData.newOrder, 2));
+		}; onProgress("");
+		ACME.StepOrder(onProgress,function(){
+			if(UserClickSyncKill(id,tag,msg0))return;
+			acmeOK();
+		},function(err){
+			if(UserClickSyncKill(id,tag,msg0+" err: "+err))return;
+			CLog(tag,1, ShowState(sEl,Lang("调用ACME服务的订单接口：","Call the order interface of the ACME service: ")
+				+ACME.DirData.newOrder+Lang("，发生错误："+err,", An error occurred: "+err), 1));
+		});
+	};
+	//ACME接口调用完成，显示下一步
+	var acmeOK=function(){
+		verifyStepShow();
+		
+		CLog(tag,0, ShowState(sEl,Lang(
+			 "配置完成，"
+			,"Configuration is complete, ")
+			+NextStepTips(), 2), ACME.StepData);
+	};
+	
+	parsePrivateKey();
+};
+
+
+
+
+
+
+/************** UI Step3: Verify Domain Ownership **************/
+//显示第三步界面
+var verifyStepShow=function(){
+	$(".step3Hide").hide();
+	$(".step3Show").show();
+	$(".verifyStepBtn").show();
+	$(".verifyRunStopBtn").hide();
+	$(".finalizeOrderBtn").hide();
+	ShowState(".verifyStepState",false);
+	
+	//显示所有域名的验证界面
+	verifyBoxShow();
+};
+//停止验证
+window.verifyRunStopClick=function(){
+	var id=++UserClickSyncID;
+	$(".verifyStepBtn").show();
+	$(".verifyRunStopBtn").hide();
+	$(".finalizeOrderBtn").hide();
+	ShowState(".verifyStepState",false);
+	verifyRunStopFn&&verifyRunStopFn();
+};
+var verifyRunStopFn;
+//点击开始验证按钮，验证所有域名所有权
+window.verifyStepClick=function(){
+	var id=++UserClickSyncID;
+	var tag="Step-3",sEl=".verifyStepState";
+	
+	$(".step3Hide").hide();
+	$(".step3Show").show();
+	$(".verifyStepBtn").hide();
+	$(".verifyRunStopBtn").show();
+	$(".finalizeOrderBtn").hide();
+	ShowState(sEl,false);
+	
+	var domains=ACME.StepData.config.domains,auths=ACME.StepData.auths;
+	//验证中更新状态显示
+	var updateState=function(init,stopNow,isFail){
+		var isStop=stopNow||id!=UserClickSyncID;
+		var okCount=0,errCount=0,execCount=0;
+		for(var i0=0;i0<domains.length;i0++){
+			var domain=domains[i0],auth=auths[domain],challs=auth.challenges;
+			var stateEl=$(".verifyItemState_"+i0);
+			//authState: 0 待验证，1验证中，2等待重试authTryCount，11验证成功，12验证失败authError
+			if(auth.authState==11){//验证成功的，初始化也不要修改验证方式了
+				ShowState(stateEl,ACME.ChallName(challs[auth.challIdx])+" OK!",2,"");
+				okCount++;
+				continue;
+			}
+			if(init){ //记住选中的验证类型
+				var choiceEl=$("input[name=choice_authItem_"+i0+"]");
+				for(var i=0;i<choiceEl.length;i++){
+					var el=choiceEl[i];
+					if(!el.checked){ //未选中的隐藏掉
+						$(el.parentNode).hide();
+					}else{
+						auth.challIdx=+$(el).attr("challidx");
+					}
+				}
+				auth.authState=0;
+				auth.authTryCount=0;
+				auth.authError="";
+				auth.authTimer=0;
+			}
+			var challName=ACME.ChallName(challs[auth.challIdx]);
+			if(auth.authState==12){//验证失败
+				ShowState(stateEl,challName+Lang("，验证失败：",", Verify failed: ")
+					+auth.authError,1,"");
+				errCount++;
+				continue;
+			}
+			execCount++;
+			if(isStop){
+				ShowState(stateEl,false);
+				clearTimeout(auth.authTimer); auth.authTimer=0;
+			}else if(auth.authState==2)
+				ShowState(stateEl,Lang("等待重试中...","Waiting for retry...")
+					+" "+auth.authTryCount+" "+auth.authError,3,"");
+			else if(auth.authState==1)
+				ShowState(stateEl,Lang("验证中...","Verify in progress..."),0,"");
+			else ShowState(stateEl,Lang("等待验证...","Waiting for verify..."),0,"");
+		}
+		if(!isStop || stopNow){
+			var goto2=Lang("请返回第二步重新开始操作！","Please go back to step 2 and start over! ");
+			var msg=ShowState(sEl,(isFail?Lang("验证失败，","Verify failed, ")+goto2:
+					isStop?Lang("已取消，","Canceled, ")+goto2:
+					Lang("正在验证，请耐心等待... ","Verifying, please wait... "))
+				+"<div>"
+					+Lang("验证通过：","Verify pass: ")+okCount+", "
+					+Lang("未通过：","Failed: ")+errCount+", "
+					+Lang("验证中：","Verify in progress: ")+execCount
+				+"</div>"
+				, isStop?1:0);
+			if(isStop){
+				CLog(tag, 1, msg);
+			}
+		}
+	}
+	updateState(1);
+	//取一个进行验证
+	var run=function(){
+		if(id!=UserClickSyncID)return;
+		updateState();
+		var authItem,hasRunning=0,okCount=0,errCount=0;
+		for(var i0=0;i0<domains.length;i0++){
+			var domain=domains[i0],auth=auths[domain];
+			if(!authItem && !auth.authState) authItem=auth;
+			if(auth.authState==1)hasRunning++;
+			if(auth.authState==11)okCount++;
+			if(auth.authState==12)errCount++;
+		}
+		if(okCount==domains.length)//全部验证成功
+			return verifyOK();
+		if(okCount+errCount==domains.length)//全部验证完成，存在不通过的
+			return verifyFail();
+		if(!authItem || hasRunning)return;//没有待验证的或已有验证中，继续等待
+		
+		authItem.authState=1;
+		authItem.authTryCount++;
+		authItem.authError="";
+		updateState();
+		ACME.StepVerifyAuthItem(authItem, authItem.challIdx, function(isOk, retryTime, err){
+			if(id!=UserClickSyncID)return;
+			if(isOk){
+				authItem.authState=11;
+			}else{
+				authItem.authState=2;
+				authItem.authError=err;
+				authItem.authTimer=setTimeout(function(){
+					authItem.authState=0;
+					authItem.authTimer=0;
+					run();
+				}, retryTime);
+			}
+			run();
+		}, function(err){
+			if(id!=UserClickSyncID)return;
+			authItem.authState=12;
+			authItem.authError=err;
+			run();
+		});
+	};
+	
+	CLog(tag,0,"==========Verify Start==========");
+	var verifyEnd=function(){
+		$(".verifyRunStopBtn").hide();
+		verifyRunStopFn=null;
+		CLog(tag,0,"==========Verify End==========");
+	};
+	//中途停止控制
+	verifyRunStopFn=function(){
+		verifyEnd();
+		updateState(0,1);
+	};
+	//验证完成，存在不通过的
+	var verifyFail=function(){
+		CLog(tag,1,"Verify Fail!");
+		updateState(0,1,1);
+		verifyEnd();
+	};
+	//全部验证成功
+	var verifyOK=function(){
+		CLog(tag,0,"Verify OK!");
+		verifyEnd();
+		
+		finalizeOrderClick();
+	};
+	
+	//调用完成订单接口，生成证书
+	window.finalizeOrderClick=function(){
+		$(".finalizeOrderBtn").hide();
+		var msg0,onProgress=function(tips){
+			if(id!=UserClickSyncID)return;
+			msg0=CLog(tag,0, ShowState(sEl,PleaseWaitTips()
+			+Lang("验证已通过，正在签发证书。","Verify passed, issuing certificate.")
+			+' '+tips, 2));
+		}; onProgress("");
+		ACME.StepFinalizeOrder(onProgress,function(){
+			if(UserClickSyncKill(id,tag,msg0))return;
+			//显示下一步
+			downloadStepShow();
+			
+			CLog(tag,0, ShowState(sEl,Lang(
+				 "验证已通过，证书已签发，"
+				,"Verification passed, The certificate has been issued, ")
+				+NextStepTips(), 2), ACME.StepData);
+		},function(err){
+			if(UserClickSyncKill(id,tag,msg0+" err: "+err))return;
+			$(".finalizeOrderBtn").show();
+			CLog(tag,1, ShowState(sEl,Lang("签发证书发生错误，","Error issuing certificate, ")+TryAgainTips()
+				+Lang("如果多次重试都无法签发证书，可能需要返回第二步重新开始操作。","If the certificate cannot be issued after multiple retries, you may need to return to step 2 to restart the operation.")
+				+" Error: "+err, 1));
+		});
+	};
+	
+	run();
+};
+
+
+
+
+
+
+
+/************** UI Step4: Download and save the certificate PEM file **************/
+//显示第四步界面
+var downloadStepShow=function(){
+	$(".step4Hide").hide();
+	$(".step4Show").show();
+	ShowState(".downloadStepState",false);
+	
+	var config=ACME.StepData.config;
+	var hasPEM=ACME.StepData.order.downloadPEM;
+	var pemTxt=hasPEM||Lang("未发现证书，请到第二步重新操作！","No certificate found, please go to the step 2 to operate again!",true);
+	
+	$(".txt_downloadCert").val(pemTxt);
+	$(".txt_downloadKey").val(config.privateKey.pem);
+	
+	downFileName=config.domains[0].replace(/^\*\./g,"").replace(/[^\w]/g,"_");
+	downloadFileNameShow(downFileName);
+	
+	var logTxts=[];
+	var SP=function(tag){
+		logTxts.push("\n=========== "+tag+" ===========");
+		return logTxts
+	}
+	var logSet=Object.assign({
+		acmeURL:ACME.URL
+		,accountURL:ACME.StepData.account.url
+		,X509:{
+			DefaultType2_RSA:X509.DefaultType2_RSA
+			,DefaultType2_ECC:X509.DefaultType2_ECC
+		}
+		,Window:{
+			DefaultDownloadFileNames:DefaultDownloadFileNames
+		}
+	},config);
+	logSet.privateKey=config.privateKey.pem;
+	logSet.accountKey=config.accountKey.pem;
+	
+	var logTitle='/********** '+Lang($(".clientNameCN").html(),$(".clientNameEN").html(),true)+' *********/';
+	logTxts.push(logTitle);
+	logTxts.push(Lang("在线网址（GitHub）：","Online website (GitHub): ", true)+'https://xiangyuecn.github.io/ACME-HTML-Web-Browser-Client/ACME-HTML-Web-Browser-Client.html');
+	logTxts.push(Lang("在线网址（Gitee）：","Online website (Gitee): ", true)+'https://xiangyuecn.gitee.io/acme-html-web-browser-client/ACME-HTML-Web-Browser-Client.html');
+	logTxts.push("");
+	logTxts.push('GitHub: https://github.com/xiangyuecn/ACME-HTML-Web-Browser-Client');
+	logTxts.push('Gitee: https://gitee.com/xiangyuecn/ACME-HTML-Web-Browser-Client');
+	logTxts.push("");
+	logTxts.push(Lang("提示：你可以将本文件拖拽进客户端网页内，将自动填充本次证书申请的所有配置参数。","Tip: You can drag and drop this file into the client web page, and all configuration parameters of this certificate application will be filled automatically.",true));
+	logTxts.push("");
+	SP(Lang("证书申请时间","Certificate Application Time",true))
+		.push(new Date().toLocaleString());
+	SP(Lang("域名列表","Domain Name List",true))
+		.push(config.domains.join(", "));
+	SP(Lang("ACME服务地址","ACME Service URL",true))
+		.push(ACME.URL);
+	SP(Lang("CSR文本","CSR Text",true))
+		.push(ACME.StepData.order.orderCSR);
+	SP(Lang("证书PEM文本","Certificate PEM Text",true))
+		.push(pemTxt);
+	SP(Lang("证书私钥PEM文本","Certificate Private Key PEM Text",true))
+		.push(config.privateKey.pem);
+	SP(Lang("账户私钥PEM文本","Account Private Key PEM Text",true))
+		.push(config.accountKey.pem);
+	SP(Lang("账户URL","Account URL",true))
+		.push(ACME.StepData.account.url);
+	SP(Lang("完整配置信息","Complete Configuration Information",true))
+		.push("<ACME-HTML-Web-Browser-Client>"+JSON.stringify(logSet)+"</ACME-HTML-Web-Browser-Client>");
+	logTxts.push("");logTxts.push(logTitle);logTxts.push("");
+	
+	$(".txt_downloadLog").val(hasPEM?logTxts.join("\n"):pemTxt);
+};
+var initStep4=function(){//页面启动时初始化，绑定配置文件拖拽事件
+	$("body").bind("dragover",function(e){
+		e.preventDefault();
+	}).bind("drop",function(e){
+		e.preventDefault();
+		
+		var file=e.dataTransfer.files[0];
+		if(!file)return;
+		var reader = new FileReader();
+		reader.onload = function(e){
+			var txt=reader.result;
+			var m=/ACME-HTML-Web-Browser-Client>(.+?)<\/ACME-HTML-Web-Browser-Client/.exec(txt);
+			if(!m) return Toast(Lang("拖入的文件中未发现配置信息，请拖上次申请证书时保存的记录LOG文件！","No configuration information is found in the dragged file. Please drag the LOG file saved in the last certificate application!"),1);
+			
+			DropConfigFile=JSON.parse(m[1]);
+			for(var k in DropConfigFile.X509)X509[k]=DropConfigFile.X509[k];
+			for(var k in DropConfigFile.Window)window[k]=DropConfigFile.Window[k];
+			
+			CLog("DropConfigFile",0,"Reset Config",DropConfigFile);
+			Toast(Lang("识别到拖入的记录LOG文件，已填充上次申请证书时使用的配置。","The LOG file of the dragged record is identified, and the configuration used in the last certificate application has been filled."),2);
+			resetStep1();//重新初始化第1步
+		}
+		reader.readAsText(file);
+	});
+};
+var downFileName="";
+window.DefaultDownloadFileNames={ //允许设置默认的文件名，下载时自动使用此文件名
+	Cert:"" /*domain.crt*/, Key:"" /*domain.key*/, Log:"" /*domain.log*/
+};
+window.downloadBtnClick=function(type){
+	var val=$(".txt_download"+type).val();
+	var fileName=downFileName;
+	if(type=="Cert") fileName+=".pem";
+	if(type=="Key") fileName+=".key";
+	if(type=="Log") fileName+=".log";
+	if(DefaultDownloadFileNames[type]) fileName=DefaultDownloadFileNames[type];
+	
+	var url=URL.createObjectURL(new Blob([val], {"type":"text/plain"}));
+	var downA=document.createElement("A");
+	downA.href=url;
+	downA.download=fileName;
+	downA.click();
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+//Test_打头的方法仅供测试用：完成第二步后允许进行UI调试，手动调用Test_AllStepData_Save()，刷新页面可恢复界面
+window.Test_AllStepData_Save=function(){
+	if(!ACME.StepData.order) throw new Error(Lang("未完成第二步操作","The step 2 is not completed",true));
+	
+	var config=ACME.StepData.config;
+	delete ACME.PrevNonce;
+	config.privateKey=config.privateKey.pem;
+	config.accountKey=config.accountKey.pem;
+	
+	localStorage[Test_AllStepData_StoreKey]=JSON.stringify(ACME);
+	ACME=null;
+	console.warn(Lang("仅供测试：已保存测试数据，需刷新页面","For testing only: the test data has been saved, and the page needs to be refreshed",true));
+};
+var Test_AllStepData_StoreKey="ACME_HTML_Test_AllStepData";
+var initTest_Restore=function(){
+	if(localStorage[Test_AllStepData_StoreKey]){
+		console.warn(Lang("仅供测试：已保存测试数据，调用Test_Restore_StepXXX()进行恢复步骤界面","For testing only: test data has been saved, call Test_Restore_StepXXX() to restore the step interface",true));
+	}
+}
+var Test_AllStepData_Restore=function(next){
+	var data=JSON.parse(localStorage[Test_AllStepData_StoreKey]||"{}");
+	if(!data.StepData) throw new Error(Lang("未保存数据","No data saved",true));
+	for(var k in data) ACME[k]=data[k];
+	
+	var config=ACME.StepData.config;
+	X509.KeyParse(config.privateKey,function(info){
+		config.privateKey=info;
+		X509.KeyParse(config.accountKey,function(info){
+			config.accountKey=info;
+			console.log("ACME.StepData", ACME.StepData);
+			setTimeout(function(){next()});
+		});
+	});
+};
+window.Test_Restore_StepAuth=function(){
+	Test_AllStepData_Restore(function(){
+		console.warn(Lang("仅供测试：已手动恢复步骤三界面","For testing only: Step 3 interface has been manually restored",true));
+		verifyStepShow();
+	});
+};
+window.Test_Restore_StepDownload=function(){
+	Test_AllStepData_Restore(function(){
+		console.warn(Lang("仅供测试：已手动恢复步骤四界面","For testing only: Step 4 interface has been manually restored",true));
+		downloadStepShow();
+	});
+};
+
+
+
+})();
+</script>
+
+
+
+
+
+<script>
+//===================================================
+//================= ACME functions ==================
+//===================================================
+//LICENSE: GPL-3.0, https://github.com/xiangyuecn/ACME-HTML-Web-Browser-Client
+(function(){
+"use strict";
+
+/************** ACME client implementation **************/
+//RFC8555: https://www.rfc-editor.org/rfc/rfc8555.html
+window.ACME={
+	URL:""
+	,SyncID:0
+	,DirData:{}
+	,Directory:function(True,False){
+		var id=++ACME.SyncID;
+		var url=ACME.URL,dirStoreKey="ACME_HTML_cache_"+url;
+		var ok=function(cache){
+			var data=cache.data;
+			if(id!=ACME.SyncID) return False("cancel");
+			var meta=data.meta||{};
+			if(!data.newOrder)
+				return False("Not newOrder found: "+FormatText(JSON.stringify(data)));
+			ACME.DirData=data;
+			ACME.StepData.termsURL=meta.termsOfService;
+			ACME.StepData.needEAB=!!meta.externalAccountRequired;
+			var saveCache=function(){
+				localStorage[dirStoreKey]=JSON.stringify(cache);
+			};
+			saveCache();
+			True(cache,saveCache);
+		};
+		var cache=JSON.parse(localStorage[dirStoreKey]||'{}');//先读缓存
+		if(cache.time && Date.now()-cache.time<24*60*60*1000){
+			return ok(cache);
+		}
+		request(url,null,function(data){
+			ok({data:data,time:Date.now()});
+		},False);
+	}
+	
+	,StepData:{}
+	,ChallName:function(chall){ //验证类型名称
+		if(chall.type=="dns-01"){ // https://letsencrypt.org/docs/challenge-types/
+			return Lang("DNS验证","DNS Verify");
+		}else if(chall.type=="http-01"){
+			return Lang("文件URL验证","File URL Verify");
+		} // tls-alpn-01 https://www.rfc-editor.org/rfc/rfc8737
+		return chall.type.toUpperCase();
+	}
+	,ChallSort:function(chall){ //验证类型排序
+		if(chall.type=="dns-01") return 1+"_"+chall.type;
+		else if(chall.type=="http-01") return 2+"_"+chall.type;
+		return 3+"_"+chall.type;
+	}
+	// 生成JSON Web Signature(JWS)，用账户私钥签名
+	,GetJwsA:async function(Protected, Payload){
+		var key=ACME.StepData.config.accountKey;
+		var alg="ES256",algorithm={name:"ECDSA", hash:"SHA-256"};
+		if(key.type=="RSA"){
+			alg="RS256";algorithm={name:"RSASSA-PKCS1-v1_5"}
+		}
+		Protected.alg=alg;
+		var rtv={
+			"protected":Json2UrlB64(Protected)
+			, payload:Payload?Json2UrlB64(Payload):""
+		};
+		var data=Str2Bytes(rtv["protected"]+"."+rtv.payload);
+		var sign=await crypto.subtle.sign(algorithm, key.key, data);
+		rtv.signature=Bytes2UrlB64(sign);
+		return rtv;
+	}
+	// 获得随机数Nonce
+	,GetNonceA:function(useNew){
+		return new Promise(function(resolve,reject){
+			ACME.GetNonce(useNew,function(val){
+				resolve(val);
+			},function(err){
+				reject(new Error(err));
+			});
+		});
+	}
+	,GetNonce:function(useNew, True, False){
+		var old=ACME.PrevNonce;ACME.PrevNonce="";
+		if(!useNew && old) return True(old);//使用上次调用返回的值
+		request({url:ACME.DirData.newNonce
+			,method:"HEAD",response:false
+		}, null, function(data,xhr){
+			ACME.PrevNonce="";
+			//跨域无解 Chrome ZeroSSL: Refused to get unsafe header "Replay-Nonce" , 需要 Access-Control-Expose-Headers: Link, Replay-Nonce, Location
+			var val=xhr.getResponseHeader("Replay-Nonce");
+			if(!val){
+				False("GetNonce: "+Lang('此ACME服务对浏览器访问支持太差，无法跨域获取Replay-Nonce响应头。','This ACME service has too poor browser access support to get the Replay-Nonce response header across domains.'), true);
+				return;
+			}
+			True(val);
+		},function(err){
+			False("GetNonce: "+err);
+		});
+	}
+	//测试账户接口的跨域访问
+	,TestAccountCORS:function(True,False){
+		request({url:ACME.DirData.newAccount
+			,method:"POST",response:false,nocheck:true
+		}, {}, function(data,xhr){
+			if(xhr.status>0){
+				True();
+			}else{
+				False("["+xhr.status+"]",true);
+			}
+		},function(err){
+			False(err);
+		});
+	}
+	
+	//账户接口调用
+	,StepAccount:async function(True,False){
+		var id=++ACME.SyncID;
+		var tag="ACME.StepAccount";
+		CLog(tag, 0, "==========Account Start==========");
+		var Err="";
+		try{
+			await ACME._StepAccountA(id,tag);
+		}catch(e){
+			Err=e.message||"-";
+			CLog(tag, 1, Err, e);
+		}
+		CLog(tag, 0, "==========Account End==========");
+		if(Err) False(Err)
+		else True();
+	} , _StepAccountA:async function(id,tag){
+		var url=ACME.DirData.newAccount,config=ACME.StepData.config;
+		var accountData={
+			contact:["mailto:"+config.email]
+			,termsOfServiceAgreed:true
+		};
+		
+		//externalAccountRequired https://github.com/fszlin/certes/blob/08bf850bbed9e026c718f56f1bcc454afafb4f92/src/Certes/Acme/AccountContext.cs
+		if(ACME.StepData.needEAB){
+			var eab={
+				"protected":Json2UrlB64({ alg:"HS256", kid:config.eabKid, url:url })
+				,payload:Json2UrlB64(X509.PublicKeyJwk(config.accountKey))
+			};
+			var key=await crypto.subtle.importKey("raw", UrlB642Bytes(config.eabKey)
+				,{name:"HMAC",hash:"SHA-256"}, true, ["sign"]);
+			var data=Str2Bytes(eab["protected"]+"."+eab.payload);
+			var sign=await crypto.subtle.sign("HMAC", key, data);
+			eab.signature=Bytes2UrlB64(sign);
+			accountData.externalAccountBinding=eab;
+			CLog(tag,0 ,"externalAccountBinding", eab);
+		};
+		
+		//组装成jws，请求接口
+		var sendData=await ACME.GetJwsA({
+			jwk: X509.PublicKeyJwk(config.accountKey)
+			,nonce: await ACME.GetNonceA(true)
+			,url: url
+		},accountData);
+		var resp=await requestA(url, sendData);
+		if(id!=ACME.SyncID) throw new Error("cancel");
+		ACME.StepData.account={
+			url:xhrHeader(resp.xhr, "Location")
+			,data:resp.data
+		};
+		CLog(tag,0,"Account OK",ACME.StepData.account);
+	}
+	
+	//订单接口调用
+	,StepOrder:async function(Progress,True,False){
+		var id=++ACME.SyncID;
+		var tag="ACME.StepOrder";
+		CLog(tag, 0, "==========Order Start==========");
+		var Err="";
+		try{
+			await ACME._StepOrderA(Progress,id,tag);
+		}catch(e){
+			Err=e.message||"-";
+			CLog(tag, 1, Err, e);
+		}
+		CLog(tag, 0, "==========Order End==========");
+		if(Err) False(Err)
+		else True();
+	} , _StepOrderA:async function(Progress,id,tag){
+		var url=ACME.DirData.newOrder,config=ACME.StepData.config;
+		var dnsArr=[];
+		for(var i=0;i<config.domains.length;i++){
+			dnsArr.push({ type:"dns", value:config.domains[i] });
+		}
+		var orderData={
+			identifiers:dnsArr
+		};
+		
+		Progress("newOrder...");
+		//组装成jws，请求接口
+		var sendData=await ACME.GetJwsA({
+			kid: ACME.StepData.account.url
+			,nonce: await ACME.GetNonceA()
+			,url: url
+		},orderData);
+		var resp=await requestA(url, sendData);
+		if(id!=ACME.SyncID) throw new Error("cancel");
+		resp.data.orderUrl=xhrHeader(resp.xhr, "Location");
+		ACME.StepData.order=resp.data;
+		CLog(tag,0,"Order OK",ACME.StepData.order);
+		
+		//准备Key Authorizations需要的参数 参考：rfc8555 8.1
+		var jwkStr=JSON.stringify(X509.PublicKeyJwk(config.accountKey));
+		var thumbprint=await crypto.subtle.digest({name: "SHA-256"}, Str2Bytes(jwkStr));
+		thumbprint=Bytes2UrlB64(thumbprint);
+		
+		//读取所有的验证信息
+		var idfs=ACME.StepData.order.identifiers,bad=0;
+		var auths=ACME.StepData.order.authorizations;
+		for(var i=0;i<idfs.length;i++){
+			if(config.domains.indexOf(idfs[i].value)==-1) bad=1;
+		}
+		if(bad || idfs.length!=auths.length || idfs.length!=config.domains.length)
+			throw new Error(Lang("创建的订单中的域名和配置的不一致","The domain name in the created order is inconsistent with the configuration"));
+		if(id!=ACME.SyncID) throw new Error("cancel");
+		ACME.StepData.auths={};
+		for(var i=0;i<auths.length;i++){
+			Progress("auth("+(i+1)+"/"+auths.length+")...");
+			var url=auths[i];
+			var sendData=await ACME.GetJwsA({
+				kid: ACME.StepData.account.url
+				,nonce: await ACME.GetNonceA()
+				,url: url
+			},"");
+			var resp=await requestA(url, sendData);
+			if(id!=ACME.SyncID) throw new Error("cancel");
+			resp.data.domain=idfs[i].value;
+			resp.data.authUrl=url;
+			ACME.StepData.auths[idfs[i].value]=resp.data;
+			
+			//生成Key Authorizations
+			var challs=resp.data.challenges;
+			for(var i2=0;i2<challs.length;i2++){
+				var chall=challs[i2];
+				chall.authTxt=chall.token+"."+thumbprint;
+				var sha=await crypto.subtle.digest({name: "SHA-256"}
+								, Str2Bytes(chall.authTxt));
+				if(id!=ACME.SyncID) throw new Error("cancel");
+				chall.authTxtSHA256=Bytes2UrlB64(sha);
+				chall.authTxtSHA256Base64=Bytes2Base64(sha);
+			}
+		}
+		CLog(tag,0,"Order Authorizations",ACME.StepData.auths);
+	}
+	
+	//验证一个域名
+	,StepVerifyAuthItem:async function(authItem, challIdx, True,False){
+		var tag="ACME.verify["+authItem.challenges[challIdx].type+"]:"+authItem.domain;
+		var Err="";
+		try{
+			await ACME._StepVerifyAuthItemA(authItem,challIdx, ACME.SyncID,tag, True,False);
+		}catch(e){
+			Err=e.message||"-";
+			CLog(tag, 1, Err, e);
+		}
+		if(Err) True(false, 1000, Err); //重试
+	} , _StepVerifyAuthItemA:async function(authItem,challIdx, id,tag, True,False){
+		//先通知要用的验证方式，反复发送只要成功一次即可，不管结果
+		var chall=authItem.challenges[challIdx];
+		if(!chall.isSend){
+			var url=chall.url;
+			var sendData=await ACME.GetJwsA({
+				kid: ACME.StepData.account.url
+				,nonce: await ACME.GetNonceA()
+				,url: url
+			},{});
+			var resp=await requestA({url:url,nocheck:true}, sendData);
+			var status=resp.xhr.status;
+			if(status>=200&&status<300)
+				chall.isSend=true;
+		}
+		
+		//重新查询一下状态
+		var url=authItem.authUrl;
+		var sendData=await ACME.GetJwsA({
+			kid: ACME.StepData.account.url
+			,nonce: await ACME.GetNonceA()
+			,url: url
+		},"");
+		var resp=await requestA(url, sendData);
+		var data=resp.data;
+		if(data.status=="pending"){
+			CLog(tag, 0, "pending...");
+			return True(false, 1000, "pending...");
+		}
+		if(data.status=="valid"){
+			CLog(tag, 0, "valid OK");
+			return True(true);
+		}
+		CLog(tag, 1, "Fail", data);
+		return False(data.status+": "+FormatText(JSON.stringify(data)));
+	}
+	
+	//完成订单，生成证书
+	,StepFinalizeOrder:async function(Progress,True,False){
+		var id=++ACME.SyncID;
+		var tag="ACME.StepFinalizeOrder";
+		CLog(tag, 0, "==========Finalize Start==========");
+		var Err="";
+		try{
+			await ACME._StepFinalizeOrderA(Progress,id,tag);
+		}catch(e){
+			Err=e.message||"-";
+			CLog(tag, 1, Err, e);
+		}
+		CLog(tag, 0, "==========Finalize End==========");
+		if(Err) False(Err)
+		else True();
+	} , _StepFinalizeOrderA:async function(Progress,id,tag){
+		var order=ACME.StepData.order,config=ACME.StepData.config,domains=config.domains;
+		
+		//先请求finalize
+		if(!order.finalizeIsSend){
+			Progress("finalize...");
+			//生成csr，第一个域名做CN
+			var csr=await new Promise(function(resolve,reject){
+				X509.CreateCSR(config.privateKey, domains[0], domains, function(csr){
+					resolve(csr);
+				},function(err){
+					reject(new Error(err));
+				});
+			});
+			order.orderCSR=csr;
+			CLog(tag,0,"CSR\n"+csr);
+			csr=Bytes2UrlB64(ASN1.PEM2Bytes(csr));
+			
+			var url=order.finalize;
+			//组装成jws，请求接口
+			var sendData=await ACME.GetJwsA({
+				kid: ACME.StepData.account.url
+				,nonce: await ACME.GetNonceA()
+				,url: url
+			},{ csr:csr });
+			var resp=await requestA(url, sendData);
+			if(id!=ACME.SyncID) throw new Error("cancel");
+			CLog(tag,0,"finalize result",resp.data);
+			order.finalizeIsSend=true;
+		}
+		
+		//轮询订单状态，60秒超时
+		var t1=Date.now(),tryCount=0;
+		while(!order.checkOK && Date.now()-t1<60*1000){
+			if(id!=ACME.SyncID) throw new Error("cancel");
+			tryCount++;
+			Progress("check retry:"+tryCount+"...");
+			var url=order.orderUrl;
+			//组装成jws，请求接口
+			var sendData=await ACME.GetJwsA({
+				kid: ACME.StepData.account.url
+				,nonce: await ACME.GetNonceA()
+				,url: url
+			},"");
+			var resp=await requestA(url, sendData);
+			if(id!=ACME.SyncID) throw new Error("cancel");
+			var data=resp.data;
+			if(data.status=="valid"){
+				order.checkOK=true;
+				order.certUrl=data.certificate;
+				CLog(tag,0,"check OK",data);
+				break;
+			}else if(data.status=="invalid"){
+				CLog(tag,1,"check Fail",data);
+				throw new Error(data.status+": "+FormatText(JSON.stringify(data)));
+			}else{
+				CLog(tag,0,data.status+"... wait 1s",data);
+				await new Promise(function(s){ setTimeout(s, 1000) });
+			}
+		}
+		
+		//下载证书
+		if(!order.downloadPEM){
+			Progress("download...");
+			var url=order.certUrl;
+			//组装成jws，请求接口
+			var sendData=await ACME.GetJwsA({
+				kid: ACME.StepData.account.url
+				,nonce: await ACME.GetNonceA()
+				,url: url
+			},"");
+			var resp=await requestA({url:url,response:false}, sendData);
+			if(id!=ACME.SyncID) throw new Error("cancel");
+			var pem=resp.xhr.responseText;
+			order.downloadPEM=pem;
+			CLog(tag,0,"download OK\n"+pem);
+		}
+	}
+};
+
+
+// 读取响应头，读不到就当做跨域无法读取处理，自定义的头需要 Access-Control-Expose-Headers: Link, Replay-Nonce, Location
+var xhrHeader=function(xhr,key){
+	var val=xhr.getResponseHeader(key);
+	if(!val){
+		acmeReadDirGotoCORS();
+		throw new Error(Lang("无法读取响应头"+key+"，可能是因为此ACME服务对跨域访问支持不良，请按第一步显示的提示操作。"
+			,"The response header "+key+" cannot be read, This may be because this ACME service does not support cross domain access, Please follow the prompt displayed in step 1."));
+	}
+	return val;
+};
+
+// ajax
+var requestA=function(url,post){
+	return new Promise(function(resolve,reject){
+		request(url,post,function(data,xhr){
+			resolve({data:data,xhr:xhr});
+		},function(err){
+			reject(new Error(err));
+		});
+	});
+}
+var request=function(url,post,True,False){
+	var set=typeof(url)=="string"?{url:url}:url; url=set.url;
+	var method=set.method||(post?"POST":"GET");
+	var tag="ACME.Request"; CLog(tag,4,"send "+method,set,post);
+	
+	var xhr=new XMLHttpRequest();
+	xhr.timeout=30000;
+	xhr.open(method,url,true);
+	xhr.onreadystatechange=function(){
+		if(xhr.readyState==4){
+			ACME.PrevNonce=xhr.getResponseHeader("Replay-Nonce")||"";//将此值存起来
+			
+			var isBad=xhr.status<200 || xhr.status>=300;
+			var useResp=set.response==null || set.response;
+			var err="",data,logObj;
+			if(useResp || isBad){
+				logObj=xhr.responseText;
+				try{
+					data=JSON.parse(logObj);
+					logObj=data;
+				}catch(e){ };
+			}
+			CLog(tag,4,"send End",set, {
+				status:xhr.status
+				,headers:xhr.getAllResponseHeaders()
+			}, logObj);
+			if(set.nocheck || !isBad && (!useResp || data)){
+				return True(data, xhr);
+			}
+			False((isBad?"["+xhr.status+"]":"")+FormatText(xhr.responseText));
+		}
+	};
+	if(post){
+		if(typeof(post)=="object")post=JSON.stringify(post);
+		xhr.setRequestHeader("Content-Type",set.contentType||"application/jose+json");
+		xhr.send(post);
+	}else{
+		xhr.send();
+	}
+};
+
+})();
+</script>
+
+
+
+
+
+<script>
+//==================================================================
+//================= RSA/ECC/X.509/ASN.1 functions ==================
+//==================================================================
+//LICENSE: GPL-3.0, https://github.com/xiangyuecn/ACME-HTML-Web-Browser-Client
+(function(){
+"use strict";
+
+window.X509={
+	DefaultType2_RSA:"2048" //默认创建RSA密钥位数
+	,DefaultType2_ECC:"P-256" //默认创建ECC曲线
+	,SupportECCType2:{ //支持的ECC曲线和常见名称
+		"P-256":"prime256v1", "P-384":"secp384r1", "P-521":"secp521r1"
+	}
+	,SupportECCType2Names:function(){ var str=[]; for(var k in X509.SupportECCType2)str.push(X509.SupportECCType2[k]); return str; }
+	
+	//创建RSA/ECC密钥对
+	,KeyGenerate:function(type,True,False){
+		var algorithm=0;
+		if(type=="RSA"){
+			algorithm={ publicExponent: new Uint8Array([1, 0, 1]) //E: AQAB
+				,name:"RSASSA-PKCS1-v1_5", modulusLength:+X509.DefaultType2_RSA, hash:"SHA-256" };
+		}else if(type=="ECC"){
+			algorithm={ name:"ECDSA", namedCurve:X509.DefaultType2_ECC };
+		}else{
+			False("Not support "+type);
+			return;
+		};
+		crypto.subtle.generateKey(algorithm,true,["sign","verify"])
+			.then(function(key){
+				//FireFox不支持导出pkcs8参数的ECC私钥，Chrome没问题，使用jwk获得最大兼容
+				crypto.subtle.exportKey("jwk", key.privateKey).then(function(jwk){
+					True(X509.KeyExport(jwk));
+				}).catch(function(e){
+					False(Lang('此浏览器不支持导出'+algorithm.name+'+PKCS#8格式密钥：','This browser does not support exporting '+algorithm.name+'+PKCS#8 format keys: ')+e.message);
+				});
+			}).catch(function(e){
+				False(Lang('此浏览器不支持生成'+algorithm.name+'：','This browser does not support generating '+algorithm.name+': ')+e.message);
+			});
+	}
+	//解析密钥，检查是否支持，通过回调返回格式或错误信息，pem支持公钥和私钥
+	,KeyParse:function(pem, True, False, mustPrivate){
+		var rtv={};
+		var Err=function(msg){ rtv.error=msg; False(msg, rtv); };
+		//浏览器crypto不支持PKCS#1的pem导入，提取参数转成jwk导入
+		
+		if(!/BEGIN\s*(RSA|EC)?\s*(PUBLIC|PRIVATE)\s*KEY/.test(pem))
+			return Err(Lang('不是RSA或ECC密钥','Not an RSA or ECC key'));
+		rtv.type=RegExp.$1=="EC"?"ECC":RegExp.$1;
+		var isPKCS1=!!RegExp.$1;
+		var isPub=RegExp.$2=="PUBLIC";
+		if(isPub && mustPrivate)
+			return Err(Lang('不是私钥','Is not a private key'));
+		
+		//解析提取参数信息
+		try{
+			var paramAsn1=null;
+			var asn1=ASN1.ParsePEM(pem);
+			rtv.asn1=asn1;
+			
+			if(isPKCS1){
+				if(rtv.type=="RSA"){
+					paramAsn1=asn1; //直接按顺序存放的参数
+				}else if(rtv.type=="ECC"){
+					if(isPub) //没见过这种ecc公钥
+						return Err(Lang('不支持ECC PKCS#1格式公钥','ECC PKCS#1 format public key is not supported'));
+					var oid2=asn1.sub[2].sub[0].oid;
+					rtv.type2=ASN1.OID[oid2]||"";
+					paramAsn1=asn1;
+				}
+			}else{
+				var idx=isPub?0:1; //跳过私钥开头的version，就和公钥一样了
+				var oid=asn1.sub[idx].sub[0].oid;
+				var oid2=asn1.sub[idx].sub[1].oid;
+				rtv.type=ASN1.OID[oid]||"";
+				rtv.type2=ASN1.OID[oid2]||"";
+				
+				if(rtv.type=="ECC"&&isPub)//ECC公钥直接就是值
+					paramAsn1=asn1;
+				else
+					paramAsn1=new ASN1().parse(asn1.sub[idx+1].bytes);//密钥参数
+			}
+			rtv.paramAsn1=paramAsn1;
+		}catch(e){
+			return Err(Lang('密钥解析失败：','Key resolution failed: ')+e.message);
+		}
+		if(rtv.type=="RSA"){
+			var idx=isPub?0:1; //私钥开头多一个版本号
+			rtv.param={
+				n:paramAsn1.sub[idx].bytes //Modulus
+				,e:paramAsn1.sub[idx+1].bytes //Exponent
+				,d:isPub?null:paramAsn1.sub[idx+2].bytes //D
+			};
+			var keys="p,q,dp,dq,qi".split(",");
+			for(var i=0;i<5;i++)
+				rtv.param[keys[i]]=isPub?null:paramAsn1.sub[idx+3+i].bytes;
+			rtv.type2=rtv.param.n.length*8+"";
+		}else if(rtv.type=="ECC"){
+			if(!X509.SupportECCType2[rtv.type2]){
+				return Err(Lang('只支持'+X509.SupportECCType2Names().join("、")+'曲线的ECC密钥','ECC key only supported for '+X509.SupportECCType2Names().join(",")+' curve'));
+			}
+			if(isPub){
+				var b2=paramAsn1.sub[1].bytes;
+			}else{
+				var idx=isPKCS1?3:2;
+				var b2=paramAsn1.sub[idx].sub[0].bytes;
+			}
+			if(b2[0]!=0x04)//0x04代表公钥未压缩 https://www.rfc-editor.org/rfc/rfc5480#section-2.2
+				return Err("ECC !0x04: "+b2[0]);
+			var bits=(b2.length-1)/2;
+			rtv.param={
+				x:b2.slice(1,1+bits) //xy为公钥
+				,y:b2.slice(1+bits)
+				,d:isPub?null:paramAsn1.sub[1].bytes //D
+			};
+		}else{
+			return Err(Lang('不支持的密钥类型：','Unsupported key type: ')+oid);
+		}
+		rtv.isPKCS1=isPKCS1;
+		rtv.hasPrivate=!isPub;
+		rtv.pem=pem;
+		
+		//转成CryptoKey
+		var algorithm,jwk;
+		if(rtv.type=="RSA"){
+			algorithm={ publicExponent: new Uint8Array(rtv.param.n.buffer)
+			,name:"RSASSA-PKCS1-v1_5", modulusLength:+rtv.type2, hash:"SHA-256" };
+			jwk={ kty:"RSA", alg: "RS256" };
+		}else if(rtv.type=="ECC"){
+			algorithm={ name:"ECDSA", namedCurve:rtv.type2 };
+			jwk={ kty:"EC", crv:rtv.type2 };
+		}
+		jwk=Object.assign(jwk,{ ext:true, key_ops:[isPub?"verify":"sign"] });
+		for(var k in rtv.param)
+			rtv.param[k]&&( jwk[k]=Bytes2UrlB64(rtv.param[k]) );
+		
+		crypto.subtle.importKey(
+			"jwk",jwk,algorithm,true,[isPub?"verify":"sign"]
+		).then(function(key){
+			rtv.key=key;
+			True(rtv);
+		}).catch(function(e){
+			Err(Lang('密钥转成CryptoKey失败：','Failed to convert key to CryptoKey: ')+e.message);
+		});
+	}
+	//解析出来的公钥转换成JSON Web Key(JWK)
+	,PublicKeyJwk:function(info){ // https://www.rfc-editor.org/rfc/rfc7638
+		var p=info.param;
+		if(info.type=="RSA"){
+			return { e:Bytes2UrlB64(p.e), kty:"RSA", n:Bytes2UrlB64(p.n) };
+		}else if(info.type=="ECC"){
+			return { crv:info.type2, kty:"EC", x:Bytes2UrlB64(p.x),y:Bytes2UrlB64(p.y) };
+		}else{
+			throw new Error("Jwk: "+info.type);
+		}
+	}
+	//解析出来的密钥或jwk对象转成PKCS#8格式 publicOnly：提供私钥时仅导出公钥 returnType：1 bytes，2 asn1，other pem
+	,KeyExport:function(info,publicOnly,returnType){
+		var tag="KeyExport: ", S=ASN1.S,V=ASN1.V; //ASN1快捷创建方式
+		var param=info.param,type=param&&info.type,type2=info.type2;//解析出来的格式
+		if(!param){//jwk
+			if(info.kty){
+				type=info.kty=="EC"?"ECC":info.kty;
+				if(type=="ECC")type2=info.crv;
+			}else throw new Error(tag+"bad key");
+		}
+		var keys=(type=="ECC"?"x,y,d":"n,e,d,p,q,dp,dq,qi").split(",");
+		if(!param){//jwk参数需转成二进制
+			param={};
+			for(var i=0;i<keys.length;i++){
+				var k=keys[i],b64=info[k];
+				if(b64)param[k]=UrlB642Bytes(b64);
+			}
+		}
+		var useD=!publicOnly&&param.d;//导出私钥
+		
+		var bytes;//封装参数
+		if(type=="RSA"){
+			var asn1=S(0x30, V(0x02, param.n), V(0x02, param.e));
+			if(useD){//公钥只需n、e参数，私钥要全部
+				asn1.sub.splice(0,0,V(0x02, [0]));//开头插入版本号
+				for(var i=2;i<keys.length;i++){
+					asn1.push(V(0x02, param[keys[i]]));
+				}
+			}
+			bytes=asn1.toBytes();
+		}else if(type=="ECC"){ //公钥x、y参数，私钥外面再套一层d
+			var pubB=new Uint8Array(1+param.x.length*2); pubB[0]=0x04;
+			pubB.set(param.x, 1);
+			pubB.set(param.y, 1+param.x.length);
+			if(useD){
+				bytes=S(0x30, V(0x02,[1]), V(0x04, param.d)
+					, S(0xA1, V(0x03, pubB)) ).toBytes();
+			}else bytes=pubB;
+		}else{ throw new Error(tag+type); }
+		
+		var typeASN1=S(0x30 //封装类型
+			,V(0x06, ASN1.OID2Bytes(ASN1.OID[type]))
+			,type=="RSA"?V(0x05,[])
+					:V(0x06, ASN1.OID2Bytes(ASN1.OID[type2]))
+		);
+		
+		if(useD){//封装私钥
+			var keyA=S(0x30, V(0x02, [0]), typeASN1, V(0x04, bytes));
+		}else{ //封装公钥
+			var keyA=S(0x30 ,typeASN1, V(0x03, bytes));
+		};
+		if(returnType==2) return keyA;
+		bytes=keyA.toBytes();
+		if(returnType==1) return bytes;
+		var str=Bytes2Base64(bytes).replace(/(.{64})/g,"$1\n").trim();
+		var sp=useD?"PRIVATE":"PUBLIC";
+		return '-----BEGIN '+sp+' KEY-----\n'+str+'\n-----END '+sp+' KEY-----';
+	}
+	
+	
+	//创建证书请求CSR，提供私钥用于CSR签名
+	,CreateCSR:function(keyInfo,commonName,domains,True,False){
+		//CSR格式：rfc2986，太复杂了，直接拿openssl生成csr用ASN1.ParsePEM来观看格式
+		var S=ASN1.S,V=ASN1.V; //ASN1快捷创建方式
+		
+		//封装公钥
+		try{
+			var pubA=X509.KeyExport(keyInfo, true, 2);
+		}catch(e){ return False(e.message) }
+		
+		//封装域名列表扩展属性
+		var altNameA=S(0x30);
+		for(var i=0;i<domains.length;i++)
+			altNameA.push(V(0x82, Str2Bytes(domains[i])));
+		
+		//组装CSR主体
+		var bodyA=S(0x30
+			,V(0x02, [0]) //版本号 固定值0
+			,S(0x30, S(0x31 ,S(0x30 //只提供一个属性：CN
+				,V(0x06, ASN1.OID2Bytes("2.5.4.3"))
+				,V(0x0C, Str2Bytes(commonName))
+			)))
+			,pubA //公钥
+			,S(0xA0, S(0x30 //扩展属性，域名列表
+				,V(0x06, ASN1.OID2Bytes("1.2.840.113549.1.9.14"))
+				,S(0x31, S(0x30, S(0x30
+					,V(0x06, ASN1.OID2Bytes("2.5.29.17"))
+					,V(0x04, altNameA.toBytes())
+				)))
+			))
+		);
+		
+		//签名生成CSR rfc2315
+		var bodyBytes=bodyA.toBytes();
+		var algorithm={name:"ECDSA", hash:"SHA-256"};
+		if(keyInfo.type=="RSA"){
+			algorithm={name:"RSASSA-PKCS1-v1_5"}
+		}
+		crypto.subtle.sign(algorithm, keyInfo.key, bodyBytes).then(function(arr){
+			var signBytes=new Uint8Array(arr);
+			if(keyInfo.type=="ECC"){//ECC分两段重新封装一下
+				var s1=signBytes.subarray(0,keyInfo.param.x.length);
+				var s2=signBytes.subarray(keyInfo.param.x.length);
+				signBytes=S(0x30, V(0x02,s1), V(0x02,s2)).toBytes();
+			}
+			var csrA=S(0x30, bodyA
+				,S(0x30 //签名类型
+					,V(0x06, ASN1.OID2Bytes(ASN1.OID["SHA256_"+keyInfo.type]))
+					,keyInfo.type=="RSA"?V(0x05,[]):null //ECC没有第二个参数
+				)
+				,V(0x03, signBytes)
+			);
+			var bytes=csrA.toBytes();
+			var str=Bytes2Base64(bytes).replace(/(.{64})/g,"$1\n").trim();
+			True('-----BEGIN CERTIFICATE REQUEST-----\n'+str+'\n-----END CERTIFICATE REQUEST-----');
+		}).catch(function(e){
+			False("CSR sign:"+e.message);
+		});
+	}
+};
+
+
+
+//简单实现ASN.1解析和封包
+window.ASN1=function(tag, bytes){
+	this.sub=[];
+	if(tag)this.setTag(tag);
+	if(bytes)this.setBytes(bytes);
+};
+ASN1.S=function(tag){ //快捷创建容器类型，并提供任意多个子元素
+	var v=new ASN1(tag);
+	for(var i=1,a=arguments;i<a.length;i++){a[i]&&v.push(a[i])}
+	return v;
+};
+ASN1.V=function(tag, bytes){ //快捷创建值类型
+	return new ASN1(tag, bytes)	
+};
+ASN1.ParsePEM=function(pem){
+	return new ASN1().parsePEM(pem);
+};
+ASN1.TagNames={
+	'01':'BOOLEAN','02':'INTEGER','03':'BIT_STRING'
+	,'04':'OCTET_STRING','05':'NULL','06':'OID'
+	,'0C':'UTF8String','13':'Printable_String'
+	,'17':'UTCTime','18':'GeneralizedTime','30':'SEQUENCE','31':'SET'
+};
+ASN1.OID={
+	 "1.2.840.113549.1.1.1":"RSA"
+	,"1.2.840.113549.1.1.11":"SHA256_RSA"
+	,"1.2.840.10045.2.1":"ECC"
+	,"1.2.840.10045.4.3.2":"SHA256_ECC"
+	,"1.2.840.10045.3.1.7":"P-256" //secp256r1 | prime256v1
+	,"1.3.132.0.34":"P-384" //secp384r1
+	,"1.3.132.0.35":"P-521" //secp521r1
+};	for(var k in ASN1.OID)ASN1.OID[ASN1.OID[k]]=k;
+ASN1.OID2Bytes=function(oid){
+	var arr = oid.split('.'), byts = [];
+	var v0=+arr[0],v1=+arr[1];
+	if (!/^[\d\.]+$/.test(oid)|| arr.length < 3 || v0 > 2 || v0 * 40 + v1 > 0xff)
+		throw new Error("bad oid: "+oid);
+	byts.push(v0 * 40 + v1);
+	for (var i = 2, len = arr.length; i < len; i++) {
+		var num = +arr[i], bits = [];
+		while (num >= 0x80) { bits.push(num % 0x80); num /= 0x80; }
+		bits.push(num); bits.reverse();
+		for (var j = 0, jl = bits.length - 1; j <= jl; j++) {
+			if (j != jl) {
+				byts.push(0x80 + bits[j]);
+			} else {
+				byts.push(bits[j]);
+			}
+		}
+	}
+	return new Uint8Array(byts);
+};
+ASN1.OID2Text=function(bytes){
+	var str = "", b0 = bytes[0];
+	var m = b0 < 80 ? b0 < 40 ? 0 : 1 : 2;
+	str+=m+"."+(b0 - m * 40);
+	for (var i = 1, len = bytes.length; i < len; ) {
+		var num = 0;
+		for (; i < len; ) {
+			var bit = bytes[i++]; num *= 0x80;
+			if (bit >= 0x80) num += bit - 0x80;
+			else { num += bit; break; }
+		}
+		str+="."+num;
+	}
+	return str;
+};
+ASN1.ParseSize=function(pos, bytes){ //简单解析长度数值
+	var bitCount=bytes[pos[0]++],size=0;
+	if(bitCount < 0x80) size=bitCount;
+	else if(bitCount == 0x80) size=-404; //不定长，需搜索两个0结尾，直接拒绝支持
+	else for(var i=0,len=bitCount&0x7F;i<len;i++)
+		size=size*256+bytes[pos[0]++];
+	if(size<0 || size>bytes.length-pos[0])throw new Error("ASN.1 Bad size "+size);
+	return size;
+};
+ASN1.ParseBlock=function(pos, bytes, sub){ //简单解析一块子内容
+	sub=sub||[];
+	while(pos[0]<bytes.length){
+		var idx0=pos[0],item=new ASN1();
+		var tag=bytes[pos[0]++],size=ASN1.ParseSize(pos, bytes);
+		if((tag&0x20) != 0){//结构化容器，嵌套调用
+			item.parse(bytes.slice(idx0, pos[0]+size));
+		}else{//普通内容
+			var chunk=bytes.slice(pos[0], pos[0]+size);
+			if(tag==0x02 || tag==0x03){//去掉开头补的0，正整数
+				if(chunk.length>1 && chunk[0]==0){
+					chunk=chunk.slice(1);
+				}
+			}
+			item.setTag(tag);
+			item.setBytes(chunk);
+		}
+		sub.push(item);
+		pos[0]+=size;
+	}
+	return sub;
+};
+ASN1.PEM2Bytes=function(pem){
+	pem=pem.replace(/[\s\r\n]/g,"");
+	var m=/^-+BEGIN\w*-+([^-]+)-+END\w+-+$/i.exec(pem);
+	try{
+		return Base642Bytes(m[1]);
+	}catch(e){
+		throw new Error(Lang('不是pem格式。','Not a pem format.'));
+	}
+};
+ASN1.prototype={
+	setTag:function(tag){
+		var txt=(tag<16?"0":"")+tag.toString(16).toUpperCase();
+		this.tag=tag;
+		this.tagTxt=txt;
+		this.tagName=ASN1.TagNames[txt]||"0x"+txt;
+	}
+	,setBytes:function(bytes){
+		if(bytes.length==null||(bytes.slice==null && bytes.subarray==null))
+			throw new Error("Not Array");
+		if(this.tag==0x06) this.oid=ASN1.OID2Text(bytes);
+		if(this.tag==0x0C||this.tag==0x13) this.string=Bytes2Str(bytes);
+		this.bytes=bytes;
+	}
+	,push:function(asn1){
+		if(!asn1.parsePEM) throw new Error("Not ASN1");
+		this.sub.push(asn1);
+		return this;
+	}
+	,parsePEM:function(pem){
+		return this.parse(ASN1.PEM2Bytes(pem));
+	}
+	,parse:function(bytes){
+		var pos=[0];
+		//最外层必须是个结构化容器，第6位为1，为0为基础类型 https://www.jianshu.com/p/ce7ab5f3f33a
+		if((bytes[0]&0x20) == 0) throw new Error("ASN.1 parse: Not SEQ");
+		this.setTag(bytes[pos[0]++]);
+		var size=ASN1.ParseSize(pos, bytes);
+		bytes=bytes.slice(pos[0], pos[0]+size);
+		this.setBytes(bytes);
+		//解析子内容
+		ASN1.ParseBlock([0], bytes, this.sub);
+		return this;
+	}
+	,toBytes:function(innerOlny){
+		var chunks=[],len=0;
+		if(this.sub.length){//容器类型，递归调用
+			for(var i=0;i<this.sub.length;i++){
+				var arr=this.sub[i].toBytes();
+				chunks.push(arr); len+=arr.length;
+			}
+		}else if(this.bytes&&this.bytes.length){//简单类型
+			if(this.tag==0x02 && this.bytes[0] >= 0x80 || this.tag==0x03){
+				chunks.push([0]);len++;  //0x02负数 0x03需要开头补0
+			}
+			chunks.push(this.bytes); len+=this.bytes.length;
+		}
+		if(!innerOlny){//添加标签和长度
+			var arr=[], num=len;
+			if(num<0x80) arr.push(num);
+			else {
+				while(num>0xff){ arr.push(num&0xff); num=num>>8; }
+				arr.push(num&0xff); arr.push(0x80+arr.length);
+			}
+			arr.push(this.tag); arr.reverse();
+			chunks.splice(0,0,arr); len+=arr.length;
+		}
+		var bytes=new Uint8Array(len),n=0;
+		for(var i=0;i<chunks.length;i++){
+			var arr=chunks[i];
+			bytes.set(arr, n); n+=arr.length;
+		}
+		return bytes;
+	}
+};
+
+})();
+</script>
+
+
+
+
+
+
+
+<script>
+//===========================================================
+//================= Common functions ==================
+//===========================================================
+//LICENSE: GPL-3.0, https://github.com/xiangyuecn/ACME-HTML-Web-Browser-Client
+(function(){
+"use strict";
+
+/************** Language **************/
+window.LangCur=/\b(zh|cn)\b/i.test(navigator.language)?"cn":"en";
+window.Lang=function(cn,en,txt){
+	if((cn||en) && (!cn||!en))throw new Error("Lang bad args");
+	if(txt)return LangCur=="cn"?cn:en;
+	var html="",ks={cn:cn,en:en};
+	for(var k in ks){
+		html+=(LangCur!=k?'<!--LangHide1-->':'')
+			+'<span class="lang'+k.toUpperCase()
+			+'" style="'+(LangCur==k?'':'display:none')
+			+'">'+ks[k]+'</span>'
+			+(LangCur!=k?'<!--LangHide2-->':'');
+	}
+	return html;
+};
+window.LangReview=function(cls){
+	var el=$(cls||"body");
+	el.find(".langCN")[LangCur=="cn"?"show":"hide"]();
+	el.find(".langEN")[LangCur!="cn"?"show":"hide"]();
+	var inputs=el.find(".inputLang");
+	for(var i=0;i<inputs.length;i++)
+		inputs[i].setAttribute("placeholder",inputs[i].getAttribute("placeholder-"+LangCur));
+};
+window.LangClick=function(lang){
+	LangCur=lang;
+	LangReview();
+	$(".langBtn").css("color",null);
+	$(".langBtn_"+lang).css("color","#000");
+	$("body").css("wordBreak",lang=="cn"?"break-all":null);
+	
+	if(!document.titleLang)document.titleLang=document.title;
+	var arr=document.titleLang.split("|"),t1=[],t2=[];
+	for(var i=0;i<arr.length;i++)
+		if(/[^\x00-\xff]/.test(arr[i]) == (LangCur=="cn"))t1.push(arr[i].trim());
+		else t2.push(arr[i].trim());
+	document.title=t1.concat(t2).join(" | ");
+};
+
+
+/************** Console log output **************/
+window.CLog=function(tag, color, msg){
+	var now=new Date();
+	var t=("0"+now.getMinutes()).substr(-2)
+		+":"+("0"+now.getSeconds()).substr(-2)
+		+"."+("00"+now.getMilliseconds()).substr(-3);
+	msg=msg.replace(/<!--LangHide1[\S\s]+?LangHide2-->/g,"");//去掉没有显示的语言
+	msg=msg.replace(/<[^>]+>/g,"");
+	var arr=["["+t+" "+tag+"]"+msg];
+	for(var i=3;i<arguments.length;i++){
+		arr.push(arguments[i]);
+	};
+	var fn=color==1?console.error:color==3?console.warn:color==4?console.debug:console.log;
+	fn.apply(console,arr);
+	return msg;
+};
+
+
+/************** $ Selector / like jQuery **************/
+(function(){
+window.$=function(cls){ if(cls&&cls.is$) return cls; return new fn(cls) }
+var fn=function(cls,node){
+	this.length=0;
+	if(!cls)return;
+	if(cls.appendChild){this.push(cls); return}
+	var arr=(node||document).querySelectorAll(cls);
+	for(var i=0;i<arr.length;i++)this.push(arr[i]);
+};
+fn.prototype={
+	is$:1
+	,push:function(val){ this[this.length++]=val }
+	,find:function(cls){ var el0=this[0]; return new fn(el0?cls:"",el0) }
+	,val:function(val){ return this.prop("value",val) }
+	,hide:function(){ return this.css("display","none") }
+	,show:function(display){ return this.css("display",display===undefined?null:display) }
+	
+	,html:function(html){
+		var el0=this[0];
+		if(html===undefined)return el0&&el0.innerHTML||"";
+		for(var i=0;i<this.length;i++) this[i].innerHTML=html;
+		return this;
+	}
+	,append:function(html){ return this._end(html) }
+	,prepend:function(html){ return this._end(html,1) }
+	,_end:function(html,prep){
+		var el0=this[0];
+		if(html && el0){
+			var nodes=html;
+			if(typeof(html)=="string"){
+				var div=document.createElement("div");
+				div.innerHTML=html;
+				nodes=[];
+				for(var i=0;i<div.childNodes.length;i++)nodes.push(div.childNodes[i]);
+			}else if(html.appendChild){
+				nodes=[html];
+			}
+			if(prep)prep=el0.firstChild;
+			for(var i=0;i<nodes.length;i++){
+				if(prep) el0.insertBefore(nodes[i],prep);
+				else el0.appendChild(nodes[i])
+			}
+		}
+		return this;
+	}
+	,prop:function(key,val){
+		var el0=this[0];
+		if(val===undefined)return el0&&el0[key];
+		for(var i=0;i<this.length;i++) this[i][key]=val;
+		return this;
+	}
+	,attr:function(key,val){
+		var el0=this[0];
+		if(val===undefined)return el0&&el0.getAttribute(key);
+		for(var i=0;i<this.length;i++){
+			if(val==null) this[i].removeAttribute(key);
+			else this[i].setAttribute(key,val);
+		}
+		return this;
+	}
+	,css:function(key,val){
+		for(var i=0;i<this.length;i++)
+			this[i].style[key]=val;
+		return this;
+	}
+	,bind:function(type,fn){
+		for(var i=0;i<this.length;i++)
+			this[i].addEventListener(type,fn);
+		return this;
+	}
+};
+})();
+
+
+/************** functions **************/
+window.FormatText=function(str){
+	return str.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+};
+
+window.Str2Bytes=function(str){
+	str=unescape(encodeURIComponent(str));
+	var u8arr=new Uint8Array(str.length);
+	for(var i=0;i<str.length;i++)u8arr[i]=str.charCodeAt(i);
+	return u8arr;
+};
+window.Bytes2Str=function(bytes){
+	var str="";
+	for(var i=0;i<bytes.length;i++) str+=String.fromCharCode(bytes[i]);
+	return decodeURIComponent(escape(str));
+};
+window.Json2UrlB64=function(data){
+	return Bytes2UrlB64(JSON.stringify(data));
+};
+window.Base642Bytes=function(b64){
+	var str=atob(b64);
+	var u8arr=new Uint8Array(str.length);
+	for(var i=0;i<str.length;i++)u8arr[i]=str.charCodeAt(i);
+	return u8arr;
+};
+window.UrlB642Bytes=function(str){
+	str=str.replace(/_/g,"\/").replace(/-/g,"+");
+	while(str.length%4)str+="=";
+	return Base642Bytes(str);
+};
+window.Bytes2UrlB64=function(bytes){//二进制数组转成url base64
+	return Bytes2Base64(bytes).replace(/\//g,"_").replace(/\+/g,"-").replace(/=/g,"");
+};
+window.Bytes2Base64=function(bytes){
+	var str="";
+	if(typeof(bytes)=="string"){
+		str=unescape(encodeURIComponent(bytes));
+	}else{
+		if(bytes instanceof ArrayBuffer) bytes=new Uint8Array(bytes);
+		for(var i=0;i<bytes.length;i++) str+=String.fromCharCode(bytes[i]);
+	}
+	return btoa(str);
+};
+
+})();
+</script>
+
+
+<script>
+//===========================================
+//================= Launch ==================
+//===========================================
+//LICENSE: GPL-3.0, https://github.com/xiangyuecn/ACME-HTML-Web-Browser-Client
+(function(){
+"use strict";
+
+var msg="";
+try{
+	window.PageRawHTML=window.PageRawHTML||document.documentElement.outerHTML;
+	if(window.top!=window){
+		msg=Lang(
+			 '不允许在IFrame内显示本页面，请直接通过网址访问！'
+			,'This page is not allowed to be displayed in IFrame, please visit it directly through the website!');
+		throw new Error();
+	}
+	var SupportCrypto=false;
+	eval('SupportCrypto=!!crypto.subtle.sign');
+	eval('``;(async function(){class a{}})');
+}catch(e){
+	document.body.innerHTML='<div style="font-size:32px;color:red;font-weight:bold;text-align:center;padding-top:100px">'+(msg||Lang(
+		 '浏览器版本太低'+(SupportCrypto?'':'（不支持Crypto）')+'，请换一个浏览器再试！'
+		,'The browser version is too low'+(SupportCrypto?'':' (Crypto is not supported)')+'. Please change another browser and try again!'
+	))+'</div>';
+	return;
+}
+$(".main").html($(".main").html()); //彻底干掉输入框自动完成
+$("input,textarea,select").attr("autocomplete","off");
+
+$(".main-load").hide();
+$(".main").show();
+LangClick(LangCur);
+
+initMainUI();
+
+})();
+</script>
+<!-- PageRawHTML: 后面不许放内容 -->
+
+</body>
+</html>
