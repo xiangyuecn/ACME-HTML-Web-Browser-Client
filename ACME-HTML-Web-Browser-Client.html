@@ -5,12 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 <link rel="shortcut icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAe1BMVEUDuu3///8AtuwAue1c0/QAt+1a0vSZ4/gOve4Ju+4AtOzf9v31/P4iw/DS8/yf5fnE7/tNzvMsxvHw+/7t+v7k+P2U4veO4PeA3Pbp+f7h9/3Y9f3I8Pxt1/Vi1PRQz/NDzPIzyPEWv+76/v/3/f+87fqn5/mI3/Z82vb+fQDoAAAA10lEQVQ4y63T2c7CIBCGYWamUwFZurfuy7/e/xVaeySlYmJ8T78nISQgPh0xU2pGZa1EfrazHJz5an2FT3brYKoul4UqAHx5Hhqoq6VTMAc4aER9acDjEviFPd2voP9gKykGVECHkzyBsRzvI+g1jWG5BFDIPXRKjqkcTKUwPISPbvsN9XpqA9DuehXsF4g64APALAY+AHkMVm+CzToNVld1NAmwE0zaJ0DBQughAcxZ66tLAGj6f/f2NdMgewXKGHSPgOTPfG/Dh0vqlAXlluefahaLT3UDvrAKrj7jLKkAAAAASUVORK5CYII=" />
 
-<title>ACME Web Browser Client | ACME客户端H5网页单文件版，在线免费申请签发SSL/TLS通配符泛域名HTTPS证书，支持Let's Encrypt、ZeroSSL，无需账号免登录注册 | Get Wildcard Certificates Online For Free - Single HTML File</title>
+<title>ACME Web Browser Client | ACME客户端H5网页单文件版，在线免费申请签发SSL/TLS通配符泛域名HTTPS证书，支持Let's Encrypt、ZeroSSL，无需账号免登录注册 | Windows macOS Get Wildcard Certificates Online For Free - Single HTML File</title>
 </head>
 
 <body>
 <script>
-var Version="1.0.220920";
+var Version="1.0.221001";
 console.log("LICENSE: GPL-3.0, https://github.com/xiangyuecn/ACME-HTML-Web-Browser-Client/blob/main/LICENSE");
 /***********************************
 中英对照翻译主要来自：Chrome自带翻译+百度翻译，由中文翻译成English（作者英文很菜）。
@@ -22,7 +22,7 @@ Thank you for watching the source code of this client. The code of all functions
 </script>
 
 
-<div class="main-load Center" style="padding-top:40vh;font-size:28px">Loading...</div>
+<div class="main-load" style="padding-top:40vh;text-align:center;font-size:28px">Loading...</div>
 <div class="main" style="display:none">
 <div class="mainBox acmeReadDirGotoCORSState" style="display:none"></div>
 
@@ -46,13 +46,13 @@ Thank you for watching the source code of this client. The code of all functions
 		<li class="langEN"><i>Functional use</i>This web client is used to: apply for free SSL/TLS domain name certificates (RSA, ECC/ECDSA) for HTTPS from <a href="https://letsencrypt.org/" target="_blank">Let's Encrypt</a> , <a href="https://zerossl.com/" target="_blank">ZeroSSL</a> and other certificate authorities that support the ACME protocol, and support multiple domain names and wildcard pan-domain names; Simply operate on a modern browser to obtain a domain name certificate in plain text in PEM format, does not depend on the operating system environment, does not need to download and install software, and is purely manual, <span class="Bold">only focus on the only thing that is to apply for and obtain a certificate.</span></li>
 		
 		<li class="langCN"><i>简单易用</i>点点鼠标 Ctrl+C Ctrl+V 就能完成证书的申请，全程需要的操作少，每一步都有保姆级操作提示，UI友好大气美观；<span class="Bold">本客户端不需要注册账号、更不需要登录。</span></li>
-		<li class="langEN"><i>Simple to use</i>Click the mouse and Ctrl+C Ctrl+V to complete the certificate application. The whole process requires less operations, and there are nanny level operation prompts at each step; UI friendly, atmospheric and beautiful; <span class="Bold">This client does not need to register an account, and does not need to log in.</span></li>
+		<li class="langEN"><i>Easy to use</i>Click the mouse and Ctrl+C Ctrl+V to complete the certificate application. The whole process requires less operations, and there are nanny level operation prompts at each step; UI friendly, atmospheric and beautiful; <span class="Bold">This client does not need to register an account, and does not need to log in.</span></li>
 		
 		<li class="langCN"><i>开源项目</i>本网页客户端源码已开源，访问网址由托管仓库提供，源码透明可追溯。</li>
 		<li class="langEN"><i>Open source project</i>The source code of the client side of this webpage has been open sourced, and the access URL is provided by the hosting warehouse, and the source code is transparent and traceable.</li>
 		
 		<li class="langCN"><i>单一文件</i>本网页客户端仅一个静态 HTML 文件，不依赖其他任何文件；因此可以直接保存到你本地（右键-另存为），即可通过浏览器打开。</li>
-		<li class="langEN"><i>A single file</i>This web client is only a static HTML file and does not depend on any other files; therefore, it can be directly saved to your local (right-click - save as), and you can open it through a browser.</li>
+		<li class="langEN"><i>A single file</i>This web client is only a single static HTML web page file and does not depend on any other files; therefore, it can be directly saved to your local (right-click - save as), and you can open it through a browser.</li>
 		
 		<li class="langCN"><i>数据安全</i>除了你指定证书颁发机构的 ACME 接口地址外，本网页客户端不会向其他任何地址发送数据，通过浏览器控制台很容易做到网络数据审查。</li>
 		<li class="langEN"><i>Data security</i>Except for the ACME interface address of the certificate authority you specify, this web client will not send data to any other address, and it is easy to check the network data through the browser console.</li>
@@ -620,13 +620,6 @@ var verifyBoxShow=function(){
 		
 		
 	</div>
-<script>
-var downloadFileNameShow=function(name){
-	$(".downloadFileName").html(name);
-	$(".downloadKeyFileName").html(name+".key");
-	$(".downloadCertFileName").html(name+".pem");
-};
-</script>
 </div>
 
 
@@ -947,7 +940,6 @@ window.initMainUI=function(){
 	$(".eccCurveNames").html(X509.SupportECCType2Names().join(Lang("、",", ")));
 	$(".donateBtnIco").html(unescape("%uD83D%uDE18"));
 	$(".versionBox").html(Lang("版本: "+Version,"Ver: "+Version));
-	downloadFileNameShow("your_domain");
 	
 	if(/mobile/i.test(navigator.userAgent)){
 		$(".main").prepend($(".langBtnBox").css("position",null));
@@ -968,6 +960,7 @@ window.initMainUI=function(){
 	
 	initTest_Restore();
 	acmeReadDirGotoCORSInit();
+	downloadFileNameShow();
 	initStep1();
 	initStep2();
 	initStep4();
@@ -1225,7 +1218,7 @@ var configPrivateKeyGenerate=function(type){
 	};
 	
 	var msg0=CLog(tag,0, ShowState(sEl,PleaseWaitTips()+Lang("正在创建","Generating ")+keyTag, 2));
-	X509.KeyGenerate(type,function(pem){
+	X509.KeyGenerate(type,type2,function(pem){
 		if(UserClickSyncKill(id,tag,msg0))return;
 		$(".in_privateKey").val(pem);
 		CLog(tag,0, ShowState(sEl,keyTag+Lang("，创建成功。",", generated successfully."), 2), '\n'+pem);
@@ -1252,7 +1245,7 @@ var configAccountKeyGenerate=function(type){
 	};
 	
 	var msg0=CLog(tag,0, ShowState(sEl,PleaseWaitTips()+Lang("正在创建","Generating ")+keyTag, 2));
-	X509.KeyGenerate(type,function(pem){
+	X509.KeyGenerate(type,type2,function(pem){
 		if(UserClickSyncKill(id,tag,msg0))return;
 		$(".in_accountKey").val(pem);
 		CLog(tag,0, ShowState(sEl,keyTag+Lang("，创建成功。",", generated successfully."), 2), '\n'+pem);
@@ -1288,6 +1281,8 @@ window.configStepClick=function(){
 			domains.splice(i,1); i--; continue;
 		}else if(mp[domain])
 			return ShowState(sEl,Lang("域名"+domain+"重复！","Duplicate domain name "+domain+"!"),1);
+		if(/[:\/;]/.test(domain))//简单校验域名格式
+			return ShowState(sEl,Lang("域名"+domain+"格式错误！","Format error of domain name "+domain+"!"),1);
 		mp[domain]=1;
 	}
 	localStorage[InputDomainsStoreKey]=domainsStore?domains.join(", "):"";
@@ -1679,6 +1674,7 @@ var initStep4=function(){//页面启动时初始化，绑定配置文件拖拽�
 			CLog("DropConfigFile",0,"Reset Config",DropConfigFile);
 			Toast(Lang("识别到拖入的记录LOG文件，已填充上次申请证书时使用的配置。","The LOG file of the dragged record is identified, and the configuration used in the last certificate application has been filled."),2);
 			resetStep1();//重新初始化第1步
+			downloadFileNameShow();
 		}
 		reader.readAsText(file);
 	});
@@ -1693,13 +1689,20 @@ window.downloadBtnClick=function(type){
 	if(type=="Cert") fileName+=".pem";
 	if(type=="Key") fileName+=".key";
 	if(type=="Log") fileName+=".log";
-	if(DefaultDownloadFileNames[type]) fileName=DefaultDownloadFileNames[type];
+	fileName=DefaultDownloadFileNames[type]||fileName;
 	
 	var url=URL.createObjectURL(new Blob([val], {"type":"text/plain"}));
 	var downA=document.createElement("A");
 	downA.href=url;
 	downA.download=fileName;
 	downA.click();
+};
+window.downloadFileNameShow=function(name){//显示下载文件名称，优先使用手动设置的默认名称
+	name=name||"your_domain";
+	var name2=(DefaultDownloadFileNames.Cert||"").replace(/\.[^\.]+$/g,"");
+	$(".downloadFileName").html(name2||name);
+	$(".downloadKeyFileName").html(DefaultDownloadFileNames.Key||name+".key");
+	$(".downloadCertFileName").html(DefaultDownloadFileNames.Cert||name+".pem");
 };
 
 
@@ -2248,14 +2251,14 @@ window.X509={
 	}
 	,SupportECCType2Names:function(){ var str=[]; for(var k in X509.SupportECCType2)str.push(X509.SupportECCType2[k]); return str; }
 	
-	//创建RSA/ECC密钥对
-	,KeyGenerate:function(type,True,False){
+	//创建RSA/ECC密钥对 type2取值：type=RSA时为密钥位数数值，type=ECC时为支持的曲线（X509.SupportECCType2）
+	,KeyGenerate:function(type,type2,True,False){
 		var algorithm=0;
 		if(type=="RSA"){
 			algorithm={ publicExponent: new Uint8Array([1, 0, 1]) //E: AQAB
-				,name:"RSASSA-PKCS1-v1_5", modulusLength:+X509.DefaultType2_RSA, hash:"SHA-256" };
+				,name:"RSASSA-PKCS1-v1_5", modulusLength:+type2, hash:"SHA-256" };
 		}else if(type=="ECC"){
-			algorithm={ name:"ECDSA", namedCurve:X509.DefaultType2_ECC };
+			algorithm={ name:"ECDSA", namedCurve:type2 };
 		}else{
 			False("Not support "+type);
 			return;

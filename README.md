@@ -1,8 +1,8 @@
-[GitHub](https://github.com/xiangyuecn/ACME-HTML-Web-Browser-Client) | [Gitee](https://gitee.com/xiangyuecn/ACME-HTML-Web-Browser-Client) | License: [GPL-3.0](https://github.com/xiangyuecn/ACME-HTML-Web-Browser-Client/blob/main/LICENSE)
+[GitHub](https://github.com/xiangyuecn/ACME-HTML-Web-Browser-Client) | [Gitee](https://gitee.com/xiangyuecn/ACME-HTML-Web-Browser-Client) | License: [GPL-3.0](LICENSE)
 
 # HTML5网页版ACME客户端 | ACME Web Browser Client
 
-**本网页客户端（仅一个静态HTML网页文件）用于**：向 [Let's Encrypt](https://letsencrypt.org/)、[ZeroSSL](https://zerossl.com/) 等支持 ACME 协议的证书颁发机构，免费申请获得用于 HTTPS 的 SSL/TLS 域名证书（`RSA`、`ECC/ECDSA`），支持多域名和通配符泛域名；只需在现代浏览器上操作即可获得 PEM 格式纯文本的域名证书，不依赖操作系统环境，无需下载和安装软件，无需注册登录，纯手动操作，**只专注于申请获得证书这一件事**。
+**本网页客户端（仅一个静态HTML网页文件）用于**：向 [Let's Encrypt](https://letsencrypt.org/)、[ZeroSSL](https://zerossl.com/) 等支持 ACME 协议的证书颁发机构，免费申请获得用于 HTTPS 的 SSL/TLS 域名证书（`RSA`、`ECC/ECDSA`），支持多域名和通配符泛域名；只需在现代浏览器上操作即可获得 PEM 格式纯文本的域名证书，不依赖操作系统环境（Windows、macOS都能用），无需下载和安装软件，无需注册登录，纯手动操作，**只专注于申请获得证书这一件事，简单易用，非常适用于希望手动快捷申请获得证书的使用场景**。
 
 **在线使用网址(Gitee)：** [https://xiangyuecn.gitee.io/acme-html-web-browser-client/ACME-HTML-Web-Browser-Client.html](https://xiangyuecn.gitee.io/acme-html-web-browser-client/ACME-HTML-Web-Browser-Client.html)
 
@@ -10,7 +10,7 @@
 
 [​](?)
 
-**This web client (only one static HTML webpage file) is used to**: apply for free SSL/TLS domain name certificates (`RSA`, `ECC/ECDSA`) for HTTPS from Let's Encrypt , ZeroSSL and other certificate authorities that support the ACME protocol, and support multiple domain names and wildcard pan-domain names; Simply operate on a modern browser to obtain a domain name certificate in plain text in PEM format, does not depend on the operating system environment, does not need to download and install software, does not need to register and log in, and is purely manual, **only focus on the only thing that is to apply for and obtain a certificate**.
+**This web client (only a single static HTML web page file) is used to**: apply for free SSL/TLS domain name certificates (`RSA`, `ECC/ECDSA`) for HTTPS from Let's Encrypt , ZeroSSL and other certificate authorities that support the ACME protocol, and support multiple domain names and wildcard pan-domain names; Simply operate on a modern browser to obtain a domain name certificate in plain text in PEM format, does not depend on the operating system environment (both Windows and macOS can be used), does not need to download and install software, does not need to register and log in, and is purely manual, **only focus on the only thing that is to apply for and obtain a certificate, which is simple and easy to use, It is very suitable for scenarios where you want to apply for certificates manually and quickly**.
 
 **Online website (GitHub):** [https://xiangyuecn.github.io/ACME-HTML-Web-Browser-Client/ACME-HTML-Web-Browser-Client.html](https://xiangyuecn.github.io/ACME-HTML-Web-Browser-Client/ACME-HTML-Web-Browser-Client.html)
 
@@ -39,8 +39,8 @@
 
 - `Super Compatibility`: No operating system restrictions, no need to consider the operating environment, just use your common browser to open the web page to apply for a certificate.
 - `Rich functions`: Support to apply for `RSA` or `ECC(ECDSA)` certificate, support multiple domain names and wildcards, and support multiple certificate authorities.
-- `Simple to use`: Click the mouse and Ctrl+C Ctrl+V to complete the certificate application. The whole process requires less operations, and there are nanny level operation prompts at each step; UI friendly, atmospheric and beautiful; **This client does not need to register an account, and does not need to log in**.
-- `A single file`: This web client is only a static HTML file and does not depend on any other files; therefore, it can be directly saved to your local, and you can open it through a browser.
+- `Easy to use`: Click the mouse and Ctrl+C Ctrl+V to complete the certificate application. The whole process requires less operations, and there are nanny level operation prompts at each step; UI friendly, atmospheric and beautiful; **This client does not need to register an account, and does not need to log in**.
+- `A single file`: This web client is only a single static HTML web page file and does not depend on any other files; therefore, it can be directly saved to your local, and you can open it through a browser.
 - `Data security`: Except for the ACME interface address of the certificate authority you specify, this web client will not send data to any other address, and it is easy to check the network data through the browser console.
 - `System security`: Pure web application, will not and cannot make any modification to your computer system.
 
@@ -125,8 +125,41 @@ Then it is to connect with ACME to realize certificate issuance and realize inte
 ## 为什么会这么丑 | Why is it so ugly
 README和HTML的中英对照翻译主要来自：Chrome自带翻译+百度翻译，由中文翻译成English（作者英文很菜）。另外为什么没有拆分成每个语言一个文件，非要混乱的搞在一起：作者头已秃，文件多了怕心智负担太重 :) 。
 
+如果你不需要自动化续期，只想手动申请获得证书，使用本网页版的客户端是一个很不错的选择。
+
+可能正是因为手动操作、且不支持自动续期的原因，`Let's Encrypt`官网的ACME客户端列表中特别的不提供浏览器版的客户端；导致对于仅想获得证书，并不需要自动化功能的用户，不得不小心翼翼的使用那些不容易使用的客户端。
+
+之前我一直通过 `diafygi/gethttpsforfree` 网页来申请证书，但操作太复杂了，从官网中又找不到更好的网页客户端，所以我就自己写代码做了一个，欢迎使用。
+
 [​](?)
 
 The Chinese-English translation of README and HTML mainly comes from: Chrome comes with translation + Baidu translation, which is translated from Chinese to English (the author's English level is very low). In addition, why is it not split into one file for each language, and it has to be cluttered together: the author's head is bald, and there are too many files for fear that the mental burden will be too heavy :) .
 
+If you don't need automatic renewal and just want to apply for a certificate manually, using this web page client is a good choice.
+
+It may be because of manual operation and the fact that automatic renewal is not supported. The ACME client list on the `Let's Encrypt` official website does not provide a browser version of the client. As a result, users who only want to obtain certificates and do not need automation functions, they can only choose to use those clients that are not easy to use.
+
+I have been applying for a certificate through the `diafygi/gethttpsforfree` webpage before, but the operation was too complicated, and I couldn't find a better web client from the official website, so I wrote my own code and made one, welcome to use.
+
+
+
+
+
+
+
+
+[​](?)
+
+[​](?)
+
+[​](?)
+
+## 捐赠 | Donate
+如果这个项目有帮助到您，欢迎 Star 一下方便以后找得到。
+
+If this project is helpful to you, welcome Star, it will be convenient to find it in the future.
+
+您也可以使用支付宝或微信打赏作者：
+
+![](https://xiangyuecn.gitee.io/recorder/assets/donate-alipay.png)  ![](https://xiangyuecn.gitee.io/recorder/assets/donate-weixin.png)
 
