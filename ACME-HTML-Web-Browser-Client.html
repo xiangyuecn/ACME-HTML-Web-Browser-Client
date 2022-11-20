@@ -10,7 +10,7 @@
 
 <body>
 <script>
-var Version="1.0.221001";
+var Version="1.0.221120";
 console.log("LICENSE: GPL-3.0, https://github.com/xiangyuecn/ACME-HTML-Web-Browser-Client/blob/main/LICENSE");
 /***********************************
 中英对照翻译主要来自：Chrome自带翻译+百度翻译，由中文翻译成English（作者英文很菜）。
@@ -134,7 +134,7 @@ var acmeReadDirGotoCORSInit=function(){
 	`);
 	LangReview(stateEl);
 };
-var acmeReadDirGotoCORS=function(){
+var acmeReadDirGotoCORS=function(title){
 	"use strict";
 	var codes="// "+Lang("请复制本代码到打开的ACME服务URL页面的浏览器控制台中运行。","Please copy this code to the browser console of the opened ACME service URL page to run.",true)
 		+"\n\nvar Default_ACME_URL="+JSON.stringify(ACME.URL)+";"
@@ -149,19 +149,21 @@ var acmeReadDirGotoCORS=function(){
 		var js=/<script[^>]*>([\S\s]+?)<\/script>/ig,m;
 		while(m=js.exec(PageRawHTML)) eval.call(window, m[1]);
 	}).toString()+")()";
+	$(".gotoCORSBox").hide();
 	var stateEl=$(".acmeReadDirState").append(`
-<div style="padding-top:15px">
+<div class="gotoCORSBox" style="padding-top:15px">
 	<div class="pd Bold" style="color:red">
 		<i class="must">*</i>
+		`+(title||`
 		<span class="langCN">由于此ACME服务对跨域访问支持不良，请按下面步骤操作：</span>
-		<span class="langEN">Because this ACME service has poor support for cross-domain access, please follow the steps below:</span>
+		<span class="langEN">Because this ACME service has poor support for cross-domain access, please follow the steps below:</span>`)+`
 	</div>
 	<div class="pd">
 		<span class="langCN">1. 请在浏览器中直接打开此ACME服务URL，<a href="${ACME.URL}" target="_blank">点此打开</a>；</span>
 		<span class="langEN">1. Please open the ACME service URL directly in the browser, <a href="${ACME.URL}" target="_blank">click here to open</a>;</span>
 	</div>
 	<div class="pd">
-		<span class="langCN">2. 在上一步打开的页面中打开浏览器控制台（等页面加载完成后，再按F12键）；</span>
+		<span class="langCN">2. 在上一步打开的页面中打开浏览器控制台（需等页面加载完成后，再按F12键）；</span>
 		<span class="langEN">2. Open the browser console in the page opened in the previous step (after the page is loaded, press the F12 key);</span>
 	</div>
 	<div class="pd">
@@ -663,8 +665,8 @@ var verifyBoxShow=function(){
 			<span class="langEN">Thanks to the standardization of encryption functions by <a href="https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto" target="_blank">crypto.subtle</a> of modern browsers, <i class="i">RSA</i> and <i class="i">ECC</i> encryption, decryption, signature, verification, and key pair generation can be implemented on web pages without relying on any other js library. In the <i class="i">X509</i> object in this client: use X509.CreateCSR to generate CSR, use X509.KeyGenerate to create PEM format key, use X509.KeyParse to parse PEM format key, use X509.KeyExport to export PEM format key; These functions are implemented at the binary level with js code according to the corresponding standards, and binary data operations are encapsulated in <i class="i">ASN1</i> objects: ASN.1 standard binary parsing and encapsulation are implemented, Arbitrary PEM format keys or certificates can be parsed using the ASN1.ParsePEM method. These are the core foundations for implementing the ACME web client.</span>
 		</div>
 		<div class="pd" style="font-size:13px;color:#aaa">
-			<span class="langCN">然后就是对接ACME实现证书的签发，和实现交互UI；对接ACME可以直接参考 RFC 8555 标准。有些证书颁发机构的ACME服务对浏览器支持不良，未提供齐全的 <i class="i">Access-Control-*</i> 响应头，导致网页内无法直接调用服务接口；目前采用的解决办法非常简单粗暴，比如ZeroSSL：检测到此ACME服务存在跨域问题时，会调用 <i class="i">acmeReadDirGotoCORS()</i> 方法告诉用户操作步骤（你可以手动调用此方法），通过在他们的页面内运行本客户端来消除跨域问题（既然打不过，那就加入他们）。</span>
-			<span class="langEN">Then it is to connect with ACME to realize certificate issuance and realize interactive UI; for connecting with ACME, you can directly refer to the RFC 8555 standard. The ACME services of some certificate authorities do not support browsers well, and do not provide complete <i class="i">Access-Control-*</i> response headers, so that the service interface cannot be called directly in the web page; the current solution is very simple and rude, such as ZeroSSL: detect this ACME When there is a cross-domain problem with the service, the <i class="i">acmeReadDirGotoCORS()</i> method will be called to tell the user the operation steps (you can call this method manually), and the cross-domain problem will be eliminated by running this client in their page (if we can't beat them, we'd better join them).</span>
+			<span class="langCN">然后就是对接ACME实现证书的签发，和实现交互UI；对接ACME可以直接参考 RFC 8555 标准。有些证书颁发机构的ACME服务对浏览器支持不良，未提供齐全的 <i class="i">Access-Control-*</i> 响应头，导致网页内无法直接调用服务接口；目前采用的解决办法非常简单粗暴，比如ZeroSSL：检测到此ACME服务存在跨域问题时，会调用 <i class="i">acmeReadDirGotoCORS()</i> 方法告诉用户操作步骤（你可以<a onclick="acmeReadDirGotoCORS();alert('调用成功，请到第一步操作')">点此</a>手动调用此方法），通过在他们的页面内运行本客户端来消除跨域问题（既然打不过，那就加入他们）。</span>
+			<span class="langEN">Then it is to connect with ACME to realize certificate issuance and realize interactive UI; for connecting with ACME, you can directly refer to the RFC 8555 standard. The ACME services of some certificate authorities do not support browsers well, and do not provide complete <i class="i">Access-Control-*</i> response headers, so that the service interface cannot be called directly in the web page; the current solution is very simple and rude, such as ZeroSSL: detect this ACME When there is a cross-domain problem with the service, the <i class="i">acmeReadDirGotoCORS()</i> method will be called to tell the user the operation steps (you can call this method manually by <a onclick="acmeReadDirGotoCORS();alert('Call succeeded, please go to step 1')">clicking here</a>), and the cross-domain problem will be eliminated by running this client in their page (if we can't beat them, we'd better join them).</span>
 		</div>
 	</div>
 	
@@ -1113,9 +1115,15 @@ window.acmeReadDirClick=function(){
 			if(cache.corsOK==1) dirOK();//已缓存的，此ACME服务正常
 			else if(cache.corsOK==-1) testCORSFail(cache.corsError, true);//不正常已缓存
 			else testCORS();//检测是否能正常调用接口，是否支持跨域
-		},function(err){
+		},function(err,status){
 			if(UserClickSyncKill(id,tag,msg0+" err: "+err))return;
-			CLog(tag,1, ShowState(sEl,Lang("读取服务目录出错："+err,"Read service directory error: "+err)+TryAgainTips(), 1));
+			if(status===0){ //可能是跨域无法读取到任何数据
+				CLog(tag,1, ShowState(sEl,Lang("读取服务目录出错：无法访问此URL。","Read service directory error: This URL cannot be accessed.")+TryAgainTips(), 1));
+				
+				acmeReadDirGotoCORS(Lang("如果你可以在浏览器中直接打开并访问此ACME服务URL，代表此ACME服务对跨域访问支持不良，则请按下面步骤操作：","If you can open and access this ACME service URL directly in your browser, it represents that this ACME service has poor support for cross-domain access, please follow the steps below:"));
+			}else{
+				CLog(tag,1, ShowState(sEl,Lang("读取服务目录出错："+err,"Read service directory error: "+err)+TryAgainTips(), 1));
+			};
 		});
 	};
 	var saveCacheCors;
@@ -2216,7 +2224,7 @@ var request=function(url,post,True,False){
 			if(set.nocheck || !isBad && (!useResp || data)){
 				return True(data, xhr);
 			}
-			False((isBad?"["+xhr.status+"]":"")+FormatText(xhr.responseText));
+			False((isBad?"["+xhr.status+"]":"")+FormatText(xhr.responseText), xhr.status);
 		}
 	};
 	if(post){
