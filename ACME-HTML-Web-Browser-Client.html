@@ -155,9 +155,14 @@ var acmeReadDirGotoCORS=function(title){
 	<div class="pd Bold" style="color:red">
 		<i class="must">*</i>
 		`+(title||`
-		<span class="langCN">由于此ACME服务对跨域访问支持不良，请按下面步骤操作：</span>
-		<span class="langEN">Because this ACME service has poor support for cross-domain access, please follow the steps below:</span>`)+`
+		<span class="langCN">由于此ACME服务对跨域访问支持不良，</span>
+		<span class="langEN">Because this ACME service has poor support for cross-domain access, </span>
+		<span style="font-size:24px">
+			<span class="langCN">请按下面步骤操作：</span>
+			<span class="langEN">please follow the steps below:</span>
+		</span>`)+`
 	</div>
+<div style="padding-left:40px">
 	<div class="pd">
 		<span class="langCN">1. 请在浏览器中直接打开此ACME服务URL，<a href="${ACME.URL}" target="_blank">点此打开</a>；</span>
 		<span class="langEN">1. Please open the ACME service URL directly in the browser, <a href="${ACME.URL}" target="_blank">click here to open</a>;</span>
@@ -174,6 +179,7 @@ var acmeReadDirGotoCORS=function(title){
 		<span class="langCN">工作原理：代码内包含了本页面源码，在目标页面内运行后将原样的显示出本客户端，然后按正常流程操作即可，此时已没有跨域问题了（既然打不过，那就加入他们）。</span>
 		<span class="langEN">Working principle: The code contains the source code of this page. After running in the target page, the client will be displayed as it is, and then operate according to the normal process. At this time, there is no cross-domain problem (if we can't beat them, we'd better join them).</span>
 	</div>
+</div>
 	<div style="padding-top:20px">
 		<textarea class="gotoCORSText" style="width:100%;height:200px" readonly></textarea>
 	</div>
@@ -467,11 +473,11 @@ var verifyBoxShow=function(){
 				</div>
 			</div>`);
 		}else if(chall.type=="http-01"){
-			html.push(Lang('请在你的网站根目录中创建<i class="i">/.well-known/acme-challenge/</i>目录，目录内创建<i class="i">'+chall.token+'</i>文件，文件内保存下面的文件内容，保存好后<a href="http://'+auth.identifier.value+'/.well-known/acme-challenge/'+chall.token+'" target="_blank">请点此打开此文件URL</a>测试能否正常访问；注意：这个文件URL必须是80端口，并且公网可以访问，否则ACME无法访问到此地址将会验证失败。Windows操作提示：Windows中用<i class="i">.well-known.</i>作为文件夹名称就能创建<i class="i">.well-known</i>文件夹；IIS可能需在此文件夹下的MIME类型中给 <i class="i">.</i> （扩展名就是一个字"."）添加 <i class="i">text/plain</i> 才能正常访问。','Please create the <i class="i">/.well-known/acme-challenge/</i> directory in the root directory of your website, create the <i class="i">'+chall.token+'</i> file in the directory, and save the following file content in the file; After saving, <a href="http://'+auth.identifier.value+'/.well-known/acme-challenge/'+chall.token+'" target="_blank">please click here to open the URL</a> of this file to test whether Normal access; note: the URL of this file must be 80 The port and the public network can be accessed, otherwise ACME cannot access this address and the verification will fail. Windows operation tips: In Windows, you can create a <i class="i">.well-known</i> folder by using <i class="i">.well-known.</i> as the folder name; IIS may need to give <i class="i">.</i> in the MIME type under this folder (the extension is a word ".") Add <i class="i">text/plain</i> for normal access.')+'</div>');
+			html.push(Lang('请在你的网站根目录中创建<i class="i">/.well-known/acme-challenge/</i>目录，目录内创建<i class="i">'+FormatText(chall.token)+'</i>文件，文件内保存下面的文件内容，保存好后<a href="http://'+auth.identifier.value+'/.well-known/acme-challenge/'+FormatText(chall.token)+'" target="_blank">请点此打开此文件URL</a>测试能否正常访问；注意：这个文件URL必须是80端口，并且公网可以访问，否则ACME无法访问到此地址将会验证失败。Windows操作提示：Windows中用<i class="i">.well-known.</i>作为文件夹名称就能创建<i class="i">.well-known</i>文件夹；IIS可能需在此文件夹下的MIME类型中给 <i class="i">.</i> （扩展名就是一个字"."）添加 <i class="i">text/plain</i> 才能正常访问。','Please create the <i class="i">/.well-known/acme-challenge/</i> directory in the root directory of your website, create the <i class="i">'+FormatText(chall.token)+'</i> file in the directory, and save the following file content in the file; After saving, <a href="http://'+auth.identifier.value+'/.well-known/acme-challenge/'+FormatText(chall.token)+'" target="_blank">please click here to open the URL</a> of this file to test whether Normal access; note: the URL of this file must be 80 The port and the public network can be accessed, otherwise ACME cannot access this address and the verification will fail. Windows operation tips: In Windows, you can create a <i class="i">.well-known</i> folder by using <i class="i">.well-known.</i> as the folder name; IIS may need to give <i class="i">.</i> in the MIME type under this folder (the extension is a word ".") Add <i class="i">text/plain</i> for normal access.')+'</div>');
 			html.push(`<div class="pd FlexBox">
 				<div style="${nameCss}">${Lang('文件URL','File URL')}:</div>
 				<div class="FlexItem">
-					<input style="width:100%" readonly value="http://${auth.identifier.value}/.well-known/acme-challenge/${chall.token}" />
+					<input style="width:100%" readonly value="http://${auth.identifier.value}/.well-known/acme-challenge/${FormatText(chall.token)}" />
 				</div>
 			</div>
 			<div class="pd FlexBox">
@@ -1032,9 +1038,9 @@ var initStep2=function(){
 var NextStepTips=function(){
 	return '<span style="font-size:24px;font-weight:bold;">'+Lang("请进行下一步操作。"," Please proceed to the next step.")+'</span>';
 };
-//请稍后提示
+//请稍候提示
 var PleaseWaitTips=function(){
-	return Lang(" 请稍后... "," Please wait... ");
+	return Lang(" 请稍候... "," Please wait... ");
 };
 //请重试提示
 var TryAgainTips=function(){
@@ -2846,7 +2852,7 @@ fn.prototype={
 
 /************** functions **************/
 window.FormatText=function(str){
-	return str.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+	return str.replace(/[&<>='"]/g,function(a){ return "&#" + a.charCodeAt(0) + ";" });
 };
 
 window.Str2Bytes=function(str){
@@ -2913,10 +2919,13 @@ try{
 	eval('SupportCrypto=!!crypto.subtle.sign');
 	eval('``;(async function(){class a{}})');
 }catch(e){
-	document.body.innerHTML='<div style="font-size:32px;color:red;font-weight:bold;text-align:center;padding-top:100px">'+(msg||Lang(
-		 '浏览器版本太低'+(SupportCrypto?'':'（不支持Crypto）')+'，请换一个浏览器再试！'
-		,'The browser version is too low'+(SupportCrypto?'':' (Crypto is not supported)')+'. Please change another browser and try again!'
-	))+'</div>';
+	if(!msg && !SupportCrypto && window.isSecureContext===false){
+		msg=Lang('浏览器禁止不安全页面调用Crypto功能，可开启https解决，或使用localhost、file://访问', 'The browser prohibits unsafe pages from calling Crypto function. You can enable https to solve the problem, or use localhost, file:// to access');
+	}
+	if(!msg){
+		msg=Lang('浏览器版本太低'+(SupportCrypto?'':'（不支持Crypto）')+'，请换一个浏览器再试！', 'The browser version is too low'+(SupportCrypto?'':' (Crypto is not supported)')+'. Please change another browser and try again!');
+	}
+	document.body.innerHTML='<div style="font-size:32px;color:red;font-weight:bold;text-align:center;padding-top:100px">'+msg+'</div>';
 	return;
 }
 $(".main").html($(".main").html()); //彻底干掉输入框自动完成
