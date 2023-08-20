@@ -2,7 +2,7 @@
 
 # HTML5网页版ACME客户端 | ACME Web Browser Client
 
-**本网页客户端（仅一个静态HTML网页文件）用于**：向 [Let's Encrypt](https://letsencrypt.org/)、[ZeroSSL](https://zerossl.com/) 等支持 ACME 协议的证书颁发机构，免费申请获得用于 HTTPS 的 SSL/TLS 域名证书（`RSA`、`ECC/ECDSA`），支持多域名和通配符泛域名；只需在现代浏览器上操作即可获得 PEM 格式纯文本的域名证书，不依赖操作系统环境（Windows、macOS都能用），无需下载和安装软件，无需注册登录，纯手动操作，**只专注于申请获得证书这一件事，简单易用，非常适用于希望手动快捷申请获得证书的使用场景**。
+**本网页客户端（仅一个静态HTML网页文件）用于**：向 [Let's Encrypt](https://letsencrypt.org/)、[ZeroSSL](https://zerossl.com/)、[Google](https://pki.goog/) 等支持 ACME 协议的证书颁发机构，免费申请获得用于 HTTPS 的 SSL/TLS 域名证书（`RSA`、`ECC/ECDSA`），支持多域名和通配符泛域名；只需在现代浏览器上操作即可获得 PEM 格式纯文本的域名证书，不依赖操作系统环境（Windows、macOS都能用），无需下载和安装软件，无需注册登录，纯手动操作，**只专注于申请获得证书这一件事，简单易用，非常适用于希望手动快捷申请获得证书的使用场景**。
 
 **在线使用网址(Gitee)：** [https://xiangyuecn.gitee.io/acme-html-web-browser-client/ACME-HTML-Web-Browser-Client.html](https://xiangyuecn.gitee.io/acme-html-web-browser-client/ACME-HTML-Web-Browser-Client.html)
 
@@ -10,7 +10,7 @@
 
 [​](?)
 
-**This web client (only a single static HTML web page file) is used to**: apply for free SSL/TLS domain name certificates (`RSA`, `ECC/ECDSA`) for HTTPS from Let's Encrypt , ZeroSSL and other certificate authorities that support the ACME protocol, and support multiple domain names and wildcard pan-domain names; Simply operate on a modern browser to obtain a domain name certificate in plain text in PEM format, does not depend on the operating system environment (both Windows and macOS can be used), does not need to download and install software, does not need to register and log in, and is purely manual, **only focus on the only thing that is to apply for and obtain a certificate, which is simple and easy to use, It is very suitable for scenarios where you want to apply for certificates manually and quickly**.
+**This web client (only a single static HTML web page file) is used to**: apply for free SSL/TLS domain name certificates (`RSA`, `ECC/ECDSA`) for HTTPS from Let's Encrypt , ZeroSSL , Google and other certificate authorities that support the ACME protocol, and support multiple domain names and wildcard pan-domain names; Simply operate on a modern browser to obtain a domain name certificate in plain text in PEM format, does not depend on the operating system environment (both Windows and macOS can be used), does not need to download and install software, does not need to register and log in, and is purely manual, **only focus on the only thing that is to apply for and obtain a certificate, which is simple and easy to use, It is very suitable for scenarios where you want to apply for certificates manually and quickly**.
 
 **Online website (GitHub):** [https://xiangyuecn.github.io/ACME-HTML-Web-Browser-Client/ACME-HTML-Web-Browser-Client.html](https://xiangyuecn.github.io/ACME-HTML-Web-Browser-Client/ACME-HTML-Web-Browser-Client.html)
 

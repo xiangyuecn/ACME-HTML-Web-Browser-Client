@@ -10,7 +10,7 @@
 
 <body>
 <script>
-var Version="1.0.230313";
+var Version="1.0.230820";
 console.log("LICENSE: GPL-3.0, https://github.com/xiangyuecn/ACME-HTML-Web-Browser-Client/blob/main/LICENSE");
 /***********************************
 中英对照翻译主要来自：Chrome自带翻译+百度翻译，由中文翻译成English（作者英文很菜）。
@@ -42,8 +42,8 @@ Thank you for watching the source code of this client. The code of all functions
 	</span>
 	
 	<ul class="itemBox feature_ul" style="list-style-type: none;margin:8px 0 0 0;padding:0 8px 0 8px;color:#666">
-		<li class="langCN"><i>功能用途</i>本网页客户端用于：向 <a href="https://letsencrypt.org/" target="_blank">Let's Encrypt</a>、<a href="https://zerossl.com/" target="_blank">ZeroSSL</a> 等支持 ACME 协议的证书颁发机构，免费申请获得用于 HTTPS 的 SSL/TLS 域名证书（RSA、ECC/ECDSA），支持多域名和通配符泛域名；只需在现代浏览器上操作即可获得 PEM 格式纯文本的域名证书，不依赖操作系统环境，无需下载和安装软件，纯手动操作，<span class="Bold">只专注于申请获得证书这一件事。</span></li>
-		<li class="langEN"><i>Functional use</i>This web client is used to: apply for free SSL/TLS domain name certificates (RSA, ECC/ECDSA) for HTTPS from <a href="https://letsencrypt.org/" target="_blank">Let's Encrypt</a> , <a href="https://zerossl.com/" target="_blank">ZeroSSL</a> and other certificate authorities that support the ACME protocol, and support multiple domain names and wildcard pan-domain names; Simply operate on a modern browser to obtain a domain name certificate in plain text in PEM format, does not depend on the operating system environment, does not need to download and install software, and is purely manual, <span class="Bold">only focus on the only thing that is to apply for and obtain a certificate.</span></li>
+		<li class="langCN"><i>功能用途</i>本网页客户端用于：向 <a href="https://letsencrypt.org/" target="_blank">Let's Encrypt</a>、<a href="https://zerossl.com/" target="_blank">ZeroSSL</a>、<a href="https://pki.goog/" target="_blank">Google</a> 等支持 ACME 协议的证书颁发机构，免费申请获得用于 HTTPS 的 SSL/TLS 域名证书（RSA、ECC/ECDSA），支持多域名和通配符泛域名；只需在现代浏览器上操作即可获得 PEM 格式纯文本的域名证书，不依赖操作系统环境，无需下载和安装软件，纯手动操作，<span class="Bold">只专注于申请获得证书这一件事。</span></li>
+		<li class="langEN"><i>Functional use</i>This web client is used to: apply for free SSL/TLS domain name certificates (RSA, ECC/ECDSA) for HTTPS from <a href="https://letsencrypt.org/" target="_blank">Let's Encrypt</a> , <a href="https://zerossl.com/" target="_blank">ZeroSSL</a> , <a href="https://pki.goog/" target="_blank">Google</a> and other certificate authorities that support the ACME protocol, and support multiple domain names and wildcard pan-domain names; Simply operate on a modern browser to obtain a domain name certificate in plain text in PEM format, does not depend on the operating system environment, does not need to download and install software, and is purely manual, <span class="Bold">only focus on the only thing that is to apply for and obtain a certificate.</span></li>
 		
 		<li class="langCN"><i>简单易用</i>点点鼠标 Ctrl+C Ctrl+V 就能完成证书的申请，全程需要的操作少，每一步都有保姆级操作提示，UI友好大气美观；<span class="Bold">本客户端不需要注册账号、更不需要登录。</span></li>
 		<li class="langEN"><i>Easy to use</i>Click the mouse and Ctrl+C Ctrl+V to complete the certificate application. The whole process requires less operations, and there are nanny level operation prompts at each step; UI friendly, atmospheric and beautiful; <span class="Bold">This client does not need to register an account, and does not need to log in.</span></li>
@@ -95,8 +95,9 @@ Thank you for watching the source code of this client. The code of all functions
 			<span class="langEN">Certificate Authority ACME (v2, <a href="https://www.rfc-editor.org/rfc/rfc8555.html" target="_blank">RFC 8555</a>) Service URL:</span>
 		</div>
 		<div class="pd">
-			<label><input type="radio" name="choice_acmeURL" value="https://acme-v02.api.letsencrypt.org/directory">Let's Encrypt</label>
-			<label><input type="radio" name="choice_acmeURL" value="https://acme.zerossl.com/v2/DV90/directory">ZeroSSL</label>
+			<label><input type="radio" name="choice_acmeURL" value="https://acme-v02.api.letsencrypt.org/directory" desckey="descLetsEncrypt">Let's Encrypt</label>
+			<label><input type="radio" name="choice_acmeURL" value="https://acme.zerossl.com/v2/DV90/directory" desckey="descZeroSSL">ZeroSSL</label>
+			<label><input type="radio" name="choice_acmeURL" value="https://dv.acme-v02.api.pki.goog/directory" desckey="descGoogle">Google</label>
 			<label>
 				<input type="radio" name="choice_acmeURL" value="manual">
 				<span class="langCN">手动填写URL</span>
@@ -108,6 +109,37 @@ Thank you for watching the source code of this client. The code of all functions
 				<span class="langEN">For testing, don't choose</span>
 			</label>
 		</div>
+		
+		<div style="font-size:13px;color:#aaa">
+			<div class="pd descAcmeURL descLetsEncrypt" style="display:none">
+				<a href="https://letsencrypt.org/" target="_blank">Let's Encrypt</a>:
+				<span class="langCN">请按照下面的操作步骤提示进行申请即可得到证书，证书有效期90天。</span>
+				<span class="langEN">Please follow the operation steps prompts below to apply, and you can get the certificate, which is valid for 90 days.</span>
+			</div>
+			<div class="pd descAcmeURL descZeroSSL" style="display:none">
+				<a href="https://zerossl.com/" target="_blank">ZeroSSL</a>:
+				<span style="color:#f80">
+					<span class="langCN">此URL可能需要先根据下面的提示进行操作来消除跨域不能访问的问题。</span>
+					<span class="langEN">This URL may need to be operated according to the prompts below to eliminate the problem of cross-domain inaccessibility.</span>
+				</span>
+				<span class="langCN">申请证书前，你需要根据ZeroSSL的<a href="https://zerossl.com/documentation/acme/" target="_blank">官方文档</a>，先注册ZeroSSL账号并生成一个EAB凭据，每次申请证书时使用此EAB凭据，按照下面的操作步骤提示进行申请即可得到证书，证书有效期90天。</span>
+				<span class="langEN">Before applying for a certificate, you need to follow ZeroSSL's <a href="https://zerossl.com/documentation/acme/" target="_blank">official documents</a>, register a ZeroSSL account and generate an EAB credential, and use this EAB credential every time you apply for a certificate, follow the operation steps prompts below to apply, and you can get the certificate, which is valid for 90 days.</span>
+			</div>
+			<div class="pd descAcmeURL descGoogle" style="display:none">
+				<a href="https://pki.goog/" target="_blank">Google Trust Services</a>:
+				<span style="color:#f80">
+					<span class="langCN">此URL可能需要先根据下面的提示进行操作来消除跨域不能访问的问题。</span>
+					<span class="langEN">This URL may need to be operated according to the prompts below to eliminate the problem of cross-domain inaccessibility.</span>
+				</span>
+				<span class="langCN">申请证书前，你需要根据Google的<a href="https://cloud.google.com/certificate-manager/docs/public-ca-tutorial" target="_blank">官方文档</a>，在Google Cloud中生成一个EAB凭据，每次申请证书时使用此EAB凭据，按照下面的操作步骤提示进行申请即可得到证书，证书有效期90天。</span>
+				<span class="langEN">Before applying for a certificate, you need to follow Google's <a href="https://cloud.google.com/certificate-manager/docs/public-ca-tutorial" target="_blank">official documents</a>, generate an EAB credential in Google Cloud, and use this EAB credential every time you apply for a certificate, follow the operation steps prompts below to apply, and you can get the certificate, which is valid for 90 days.</span>
+				<span style="color:#f80">
+					<span class="langCN">注意：因为同一个Google EAB凭据只能绑定到一个ACME账户（私钥），因此你在首次申请证书时，<span style="font-weight:bold;font-size:20px">必须同时保存好在第二步操作中新创建的或手动填写的ACME账户私钥</span>，下次申请证书时使用此EAB凭据必须和已保存的ACME账户私钥一起使用。</span>
+					<span class="langEN">Note: Because the same Google EAB credential can only be bound to one ACME account (Private key), when you apply for a certificate for the first time, <span style="font-weight:bold;font-size:20px">you must also save the newly generated or manually filled ACME account private key in the second step</span>, this EAB credential must be used together with the saved ACME account private key when applying for a certificate next time.</span>
+				</span>
+			</div>
+		</div>
+		
 		<div class="pd FlexBox">
 			<div class="FlexItem">
 				<input class="in_acmeURL inputLang" style="width:100%"
@@ -288,6 +320,10 @@ var acmeReadDirGotoCORS=function(title){
 			<div class="pd" style="font-size:13px;color:#aaa">
 				<span class="langCN">生成或填写的私钥仅用于ACME接口签名，支持<i class="i">RSA(2048位+)</i>、<i class="i">ECC(<span class="eccCurveNames"></span>曲线)</i>私钥；账户私钥类型对证书无影响；本客户端不会对此私钥进行保存或发送给其他任何人；一个私钥相当于一个账户，可用于吊销已签发的证书；建议每次申请证书时使用相同的一个私钥（这样短期内多次申请证书时，验证域名所有权的参数极有可能会保持相同），不过每次都生成一个新的私钥大部分情况下也不会有问题。</span>
 				<span class="langEN">The generated or filled private key is only used for ACME interface signature, and supports <i class="i">RSA (2048-bit+)</i> and <i class="i">ECC (<span class="eccCurveNames"></span> curve)</i> private keys; the account private key type has no effect on the certificate; this client will not save or send this private key to anyone else; A private key is equivalent to an account and can be used to revoke an issued certificate; it is recommended to use the same private key every time you apply for a certificate (in this way, the parameters used to verify the domain name ownership are likely to remain identical when multiple certificate applications are made in a short period of time); However, generating a new private key every time will not be a problem in most cases.</span>
+				<span class="eabShow" style="color:#f80">
+					<span class="langCN">注意：如果你选择的ACME服务（比如Google）要求提供EAB凭据并且限制了同一个EAB凭据只能绑定到一个ACME账户（私钥），那每次使用此EAB凭据时必须使用相同的一个私钥（首次时如果新创建了私钥，此新私钥需立即保存起来下次和此EAB凭据一起使用）。</span>
+					<span class="langEN">Note: If the ACME service you choose (such as Google) requires EAB credentials and limits the same EAB credentials to only one ACME account (private key), then you must use the same private key every time you use this EAB credential (if you generate a new private key for the first time, this new private key needs to be saved immediately and used with this EAB credential next time).</span>
+				</span>
 			</div>
 			<div class="pd">
 				<label>
@@ -342,7 +378,7 @@ var acmeReadDirGotoCORS=function(title){
 		</div>
 		
 		
-		<div class="itemBox eabBox">
+		<div class="itemBox eabShow">
 			<div class="pd Bold">
 				<span class="langCN">EAB凭据：</span>
 				<span class="langEN">EAB Credentials:</span>
@@ -981,6 +1017,10 @@ var initStep1=function(){
 			.val(isManual?step1ChoiceStoreVal:el.value)
 			.attr("readonly",isManual?null:"");
 		
+		var descKey=$(el).attr("desckey");
+		$(".descAcmeURL").hide();
+		if(descKey)$("."+descKey).show();
+		
 		step1ChoiceStoreVal="";
 		choiceAcmeURLChangeAfter();
 	});
@@ -1180,7 +1220,7 @@ var configStepShow=function(){
 	$(".step2Show").show();
 	ShowState(".configStepState",false);
 	
-	$(".eabBox")[ACME.StepData.needEAB?'show':'hide']();
+	$(".eabShow")[ACME.StepData.needEAB?'show':'hide']();
 	if(DropConfigFile.eabKid)$(".in_eab_kid").val(DropConfigFile.eabKid);
 	if(DropConfigFile.eabKey)$(".in_eab_key").val(DropConfigFile.eabKey);
 	
