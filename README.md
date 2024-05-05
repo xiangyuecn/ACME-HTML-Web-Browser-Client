@@ -4,7 +4,7 @@
 
 **本网页客户端（仅一个静态HTML网页文件）用于**：向 [Let's Encrypt](https://letsencrypt.org/)、[ZeroSSL](https://zerossl.com/)、[Google](https://pki.goog/) 等支持 ACME 协议的证书颁发机构，免费申请获得用于 HTTPS 的 SSL/TLS 域名证书（`RSA`、`ECC/ECDSA`），支持多域名和通配符泛域名；只需在现代浏览器上操作即可获得 PEM 格式纯文本的域名证书，不依赖操作系统环境（Windows、macOS都能用），无需下载和安装软件，无需注册登录，纯手动操作，**只专注于申请获得证书这一件事，简单易用，非常适用于希望手动快捷申请获得证书的使用场景**。
 
-**在线使用网址(Gitee)：** [https://xiangyuecn.gitee.io/acme-html-web-browser-client/ACME-HTML-Web-Browser-Client.html](https://xiangyuecn.gitee.io/acme-html-web-browser-client/ACME-HTML-Web-Browser-Client.html)
+**在线使用网址(GitHub)：** [https://xiangyuecn.github.io/ACME-HTML-Web-Browser-Client/ACME-HTML-Web-Browser-Client.html](https://xiangyuecn.github.io/ACME-HTML-Web-Browser-Client/ACME-HTML-Web-Browser-Client.html) / [Gitee镜像](https://xiangyuecn.gitee.io/acme-html-web-browser-client/ACME-HTML-Web-Browser-Client.html)
 
 **交流与支持：欢迎加QQ群 `421882406`，纯小写口令 `xiangyuecn`。如需功能定制，网站、App、小程序、前端和后端等开发需求，请加此QQ群，联系群主（即作者），谢谢~**
 
@@ -62,7 +62,7 @@
 
 ## 使用方法 | Usage
 
-1. **打开本网页客户端**：可以直接双击打开保存在本地的HTML文件，或者直接打开[在线网页](https://xiangyuecn.gitee.io/acme-html-web-browser-client/ACME-HTML-Web-Browser-Client.html)使用;
+1. **打开本网页客户端**：可以直接双击打开保存在本地的HTML文件，或者直接打开[在线网页](https://xiangyuecn.github.io/ACME-HTML-Web-Browser-Client/ACME-HTML-Web-Browser-Client.html)（[gitee镜像](https://xiangyuecn.gitee.io/acme-html-web-browser-client/ACME-HTML-Web-Browser-Client.html)）使用;
 2. **步骤一**：在网页内选择证书颁发机构，或填写支持的ACME服务地址；不同证书颁发机构需要的操作不一定相同，请根据提示进行操作；
 3. **步骤二**：在网页内填写需要申请证书的域名（支持多域名、通配符），和密钥等信息配置；不同证书颁发机构需要填写的配置不一定相同，请根据提示进行操作；
 4. **步骤三**：根据网页内显示的第三步内容，给每个域名配置好合适的域名所有权验证方式；常见的验证方式有：DNS解析中配置TXT记录进行验证、上传文件到服务器进行验证，通配符域名一般仅支持DNS验证；等全部配置完成后开始验证；
@@ -161,5 +161,5 @@ If this project is helpful to you, welcome Star, it will be convenient to find i
 
 您也可以使用支付宝或微信打赏作者：
 
-![](https://xiangyuecn.gitee.io/recorder/assets/donate-alipay.png)  ![](https://xiangyuecn.gitee.io/recorder/assets/donate-weixin.png)
+![](https://gitee.com/xiangyuecn/Recorder/raw/master/assets/donate-alipay.png)  ![](https://gitee.com/xiangyuecn/Recorder/raw/master/assets/donate-weixin.png)
 
