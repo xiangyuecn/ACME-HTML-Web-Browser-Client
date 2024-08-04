@@ -10,7 +10,7 @@
 
 <body>
 <script>
-var Version="1.0.230820";
+var Version="1.0.240804";
 console.log("LICENSE: GPL-3.0, https://github.com/xiangyuecn/ACME-HTML-Web-Browser-Client/blob/main/LICENSE");
 /***********************************
 中英对照翻译主要来自：Chrome自带翻译+百度翻译，由中文翻译成English（作者英文很菜）。
@@ -174,13 +174,26 @@ var acmeReadDirGotoCORS=function(title){
 		+"\nvar PageRawHTML=`"
 			+PageRawHTML.replace(/\\/g,"\\\\").replace(/`/g,"\\`").replace(/\$\{/g,"$\\{")
 		+"`;";
+	codes+="\nvar PageErrs="+JSON.stringify({
+			e0:Lang("运行失败，可能是此浏览器阻止了代码执行，请尝试换个浏览器。","Run failed, may be because the browser blocked the code execution, please try another browser.",true)
+			,e1:Lang("运行失败，解决办法：即将自动跳转到此站点的首页或404页，然后请再次粘贴代码运行","Run failed, solution: automatically jump to the homepage or 404 page of this site, then paste the code again to run",true)
+		})+";";
 	codes+="\n("+(function(){
 		console.clear();
-		document.head.innerHTML=/<head[^>]*>([\S\s]+?)<\/head>/i.exec(PageRawHTML)[1];
-		document.body.innerHTML=/<body[^>]*>([\S\s]+)<\/body>/i.exec(PageRawHTML)[1];
-		var js=/<script[^>]*>([\S\s]+?)<\/script>/ig,m;
-		while(m=js.exec(PageRawHTML)) eval.call(window, m[1]);
-	}).toString()+")()";
+		try{
+			document.head.innerHTML=/<head[^>]*>([\S\s]+?)<\/head>/i.exec(PageRawHTML)[1];
+			document.body.innerHTML=/<body[^>]*>([\S\s]+)<\/body>/i.exec(PageRawHTML)[1];
+			var js=/<script[^>]*>([\S\s]+?)<\/script>/ig,m;
+			while(m=js.exec(PageRawHTML)) eval.call(window, m[1]);
+			ACME.Directory.toString(); //保证js已正确执行
+		}catch(e){ setTimeout(function(){ //部分浏览器json页面无法显示，跳转到根目录重试
+			console.error(e);
+			var url0=location.href, url=/^(.+\/\/[^\/\?#]+)/.exec(url0)[1];
+			if(url==url0 || url+"/"==url0) return console.error(PageErrs.e0);
+			console.log(PageErrs.e1); console.warn(PageErrs.e1); console.error(PageErrs.e1);
+			alert(PageErrs.e1); location.href=url;
+		}); }
+	}).toString()+")();\n";
 	$(".gotoCORSBox").hide();
 	var stateEl=$(".acmeReadDirState").append(`
 <div class="gotoCORSBox" style="padding-top:15px">
@@ -1678,8 +1691,7 @@ var downloadStepShow=function(){
 	
 	var logTitle='/********** '+Lang($(".clientNameCN").html(),$(".clientNameEN").html(),true)+' *********/';
 	logTxts.push(logTitle);
-	logTxts.push(Lang("在线网址（GitHub）：","Online website (GitHub): ", true)+'https://xiangyuecn.github.io/ACME-HTML-Web-Browser-Client/ACME-HTML-Web-Browser-Client.html');
-	logTxts.push(Lang("在线网址（Gitee）：","Online website (Gitee): ", true)+'https://xiangyuecn.gitee.io/acme-html-web-browser-client/ACME-HTML-Web-Browser-Client.html');
+	logTxts.push(Lang("在线网址：","Online website: ", true)+'https://xiangyuecn.github.io/ACME-HTML-Web-Browser-Client/ACME-HTML-Web-Browser-Client.html');
 	logTxts.push("");
 	logTxts.push('GitHub: https://github.com/xiangyuecn/ACME-HTML-Web-Browser-Client');
 	logTxts.push('Gitee: https://gitee.com/xiangyuecn/ACME-HTML-Web-Browser-Client');
@@ -2760,7 +2772,7 @@ ASN1.prototype={
 "use strict";
 
 /************** Language **************/
-window.LangCur=/\b(zh|cn)\b/i.test(navigator.language)?"cn":"en";
+window.LangCur=/\b(zh|cn)\b/i.test((""+navigator.language).replace(/_/g," "))?"cn":"en";
 window.Lang=function(cn,en,txt){
 	if((cn||en) && (!cn||!en))throw new Error("Lang bad args");
 	if(txt)return LangCur=="cn"?cn:en;
