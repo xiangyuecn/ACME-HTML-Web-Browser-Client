@@ -10,7 +10,7 @@
 
 <body>
 <script>
-var Version="1.0.240804";
+var Version="1.0.260120";
 console.log("LICENSE: GPL-3.0, https://github.com/xiangyuecn/ACME-HTML-Web-Browser-Client/blob/main/LICENSE");
 /***********************************
 中英对照翻译主要来自：Chrome自带翻译+百度翻译，由中文翻译成English（作者英文很菜）。
@@ -124,6 +124,10 @@ Thank you for watching the source code of this client. The code of all functions
 				</span>
 				<span class="langCN">申请证书前，你需要根据ZeroSSL的<a href="https://zerossl.com/documentation/acme/" target="_blank">官方文档</a>，先注册ZeroSSL账号并生成一个EAB凭据，每次申请证书时使用此EAB凭据，按照下面的操作步骤提示进行申请即可得到证书，证书有效期90天。</span>
 				<span class="langEN">Before applying for a certificate, you need to follow ZeroSSL's <a href="https://zerossl.com/documentation/acme/" target="_blank">official documents</a>, register a ZeroSSL account and generate an EAB credential, and use this EAB credential every time you apply for a certificate, follow the operation steps prompts below to apply, and you can get the certificate, which is valid for 90 days.</span>
+				<span style="color:#f80">
+					<span class="langCN">[2026-01]ZeroSSL证书签发服务可能不稳定，如果反复出现重试或长时间等待，第二天再试可能恢复正常。</span>
+					<span class="langEN">[2026-01] ZeroSSL certificate issuance service may be unstable. If you experience repeated retries or long wait times, try again the next day. It may return to normal.</span>
+				</span>
 			</div>
 			<div class="pd descAcmeURL descGoogle" style="display:none">
 				<a href="https://pki.goog/" target="_blank">Google Trust Services</a>:
@@ -561,8 +565,8 @@ var verifyBoxShow=function(){
 		
 		<div class="itemBox">
 			<div class="pd" style="font-size:15px">
-				<span class="langCN">请每个域名选择好对应的验证方式，根据显示的提示进行对应的配置操作；<span style="color:#cb1d1d">必须所有域名配置完成后，再来点击下面的“开始验证”按钮进行验证，</span>如果验证失败，需要返回第二步重新开始操作。</span>
-				<span class="langEN">Please select the corresponding verify method for each domain name, and perform the corresponding configuration operation according to the displayed prompts; <span style="color:#cb1d1d">after all domain names are configured, click the "Start Verify" button below to verify,</span> if the verify fails, you need to go back to the step 2 Start the operation.</span>
+				<span class="langCN">请每个域名选择好对应的验证方式，根据显示的提示进行对应的配置操作；<span style="color:#cb1d1d">必须所有域名配置完成后，再来点击下面的“开始验证”按钮进行验证，</span>如果验证失败、或验证耗时太久，需要返回第二步重新开始操作。</span>
+				<span class="langEN">Please select the corresponding verify method for each domain name, and perform the corresponding configuration operation according to the displayed prompts; <span style="color:#cb1d1d">after all domain names are configured, click the "Start Verify" button below to verify,</span> if the verify fails or takes too long, you need to go back to the step 2 Start the operation.</span>
 			</div>
 			
 			<div class="Center" style="padding:15px 0 10px">
@@ -792,6 +796,7 @@ body{
 	--word-break: break-all;
 	background:#f5f5f5 center top no-repeat;
 	background-size: auto 680px;
+	margin:0; padding:0.1px 0 0;
 }
 pre{
 	white-space:pre-wrap;
@@ -2211,6 +2216,9 @@ window.ACME={
 				CLog(tag,0,data.status+"... wait 1s",data);
 				await new Promise(function(s){ setTimeout(s, 1000) });
 			}
+		}
+		if(!order.checkOK){ //查询超时
+			throw new Error(Lang("证书签发状态查询60秒超时（重试可继续查询）","Certificate issuance status query timed out in 60 seconds (you can retry to continue querying)"));
 		}
 		
 		//下载证书
